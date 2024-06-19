@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class AttackRange : MonoBehaviour
 {
-    public PlayerCtl playerCtl;
+    public CharacterCtl characterCtlOner;
+
     private void OnTriggerEnter(Collider other)
     {
-        BotCtl botCtl = Cache<BotCtl>.GetCollider(other);
-        if (botCtl != null)
+        CharacterCtl enemy = Cache<CharacterCtl>.GetCollider(other);
+        if (enemy != null)
         {
-            Axe axe = SimplePool.Spawn<Axe>(PoolType.Axe, transform);
-            axe.Current = playerCtl.transform.position;
-            axe.Target = botCtl.transform.position;
-            axe.transform.localScale = new Vector3(.3f, .3f, .3f);
+            // thêm vào Enemy vào list và thêm a
+            characterCtlOner.AddListEnemy(enemy);
+            characterCtlOner.AddEnemyDeadAction(enemy);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        CharacterCtl characterCtl = Cache<CharacterCtl>.GetCollider(other);
+        if (characterCtl != null)
+        {
+            characterCtlOner.RemoveEnemyFromList(characterCtl);
+            characterCtlOner.RemoveEnemyDeadAction(characterCtl);
         }
     }
 }
