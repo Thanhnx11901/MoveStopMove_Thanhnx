@@ -12,5 +12,13 @@ public class Constants
 
     public const string ANIM_DEAD = "Dead";
 
+    // lưu dữ liệu
+    public const string CURRENT_WEAPON = "CurrentWeapon";
+
+    public const string CURRENT_PANT = "CurrentPant";
+
+
+
+
 
 }

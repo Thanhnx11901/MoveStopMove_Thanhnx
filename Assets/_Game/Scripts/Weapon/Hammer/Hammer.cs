@@ -9,8 +9,8 @@ public class Hammer : Weapon
     {
         base.Fire(enemy);
         Bullet bullet = SimplePool.Spawn<HammerBullet>(PoolType.Hammer);
-        bullet.TF.position = oner.GetPointShoot();
-        Vector3 bulletDirection = enemy.GetPointShoot() - oner.GetPointShoot();
-        bullet.OnInit(bulletDirection,oner);
+        bullet.TF.position = Owner.GetPointShoot();
+        Vector3 bulletDirection = enemy.GetPointShoot() - Owner.GetPointShoot();
+        bullet.OnInit(bulletDirection,Owner,TimeDespawn);
     }
 }

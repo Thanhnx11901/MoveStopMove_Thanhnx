@@ -96,9 +96,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolType: 6
+  owner: {fileID: 0}
   rb: {fileID: 5619506991753260135}
-  speed: 5
-  rotationSpeed: 1000
+  speed: 6
+  rotationSpeed: 700
 --- !u!1 &3717008478102851653
 GameObject:
   m_ObjectHideFlags: 0

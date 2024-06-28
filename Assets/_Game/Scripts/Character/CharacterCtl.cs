@@ -5,11 +5,17 @@ using UnityEngine.Events;
 
 public class CharacterCtl : GameUnit
 {
-    public UnityAction OnDeathAction;
+    [SerializeField] protected CharacterConfig characterConfig;
+    [SerializeField] protected WeaponHolder weaponHolder;
+
+    [SerializeField] protected Pant pant;
+
+    private UnityAction OnDeathAction;
     public List<CharacterCtl> listEnemys;
     //vũ khí
     public Weapon currentWeapon;
 
+    [SerializeField] protected AttackRange attackRange;
     [SerializeField] private Transform pointShoot;
 
     [SerializeField] private Transform pointTarget;
@@ -19,19 +25,25 @@ public class CharacterCtl : GameUnit
     private bool isMoving;
 
     public bool IsMoving { get => isMoving; set => isMoving = value; }
+    public bool IsAttack { get => isAttack; set => isAttack = value; }
+    public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
+    public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
+    public float Range { get => Range; set => Range = value; }
 
     [SerializeField] Animator anim;
     private string animName;
 
     private bool isAttack;
-    private Coroutine attackCoroutine;
 
     private Dictionary<CharacterCtl, UnityAction> onDeathActions = new Dictionary<CharacterCtl, UnityAction>();
+
+    protected float prepareAttackDuration;
+    protected float prepareAttackCounter;
 
 
     protected virtual void Awake()
     {
-        isAttack = false;
+        IsAttack = false;
     }
 
     protected virtual void Start()
@@ -39,34 +51,69 @@ public class CharacterCtl : GameUnit
         animName = Constants.ANIM_IDLE;
         ChangeAnim(Constants.ANIM_IDLE);
         listEnemys = new List<CharacterCtl>();
+        OnInit();
     }
 
-    protected virtual void Update()
+    // tầm đánh
+    [SerializeField] private float range;
+    // tốc độ đánh 
+    [SerializeField] private float attackSpeed;
+    // tốc độ di chuyển
+    [SerializeField] private float moveSpeed;
+
+    // set tầm đánh
+    public void SetInitialAttackRange()
     {
-        if(IsMoving == false && isAttack == false){
-            ChangeAnim(Constants.ANIM_IDLE);
-        }
-        //nếu Enemy có trong list và ko di chuyển thì thực hiện bắn
-        if (listEnemys.Count != 0)
+        if (attackRange != null)
         {
-            if (!IsMoving && !isAttack)
-            {
-                attackCoroutine = StartCoroutine(CoFire());
-            }
-        }
-        else if ((listEnemys.Count == 0) && attackCoroutine != null)
-        {
-            StopCoroutine(attackCoroutine);
-            attackCoroutine = null;
-            isAttack = false;
-        }
-        if ((IsMoving == true) && attackCoroutine != null)
-        {
-            StopCoroutine(attackCoroutine);
-            attackCoroutine = null;
-            isAttack = false;
+            range = characterConfig.attackRange;
+            attackRange.transform.localScale = new Vector3(range, 0.1f, range);
         }
     }
+    public void AddAttackRange(float additionalRange)
+    {
+        range += additionalRange;
+        if (attackRange != null)
+        {
+            attackRange.transform.localScale = new Vector3(range, 0.1f, range);
+        }
+    }
+
+    public void SetInitialAttackSpeed(){
+        attackSpeed = characterConfig.attackSpeed;
+        prepareAttackDuration = 1/ attackSpeed;
+    }
+    public void AddAttackSpeed(float additionalattackRange){
+        attackSpeed += additionalattackRange;
+        prepareAttackDuration = 1/ attackSpeed;
+    }
+
+    public void SetInitialMoveSpeed(){
+        moveSpeed = characterConfig.moveSpeed;
+    }
+    public void AddMoveSpeed(float additionalMoveSpeed){
+        MoveSpeed += additionalMoveSpeed;
+    }
+
+
+    protected virtual void OnInit()
+    {
+        SetInitialAttackRange();
+        SetInitialAttackSpeed();
+        SetInitialMoveSpeed();
+        // sinh vũ khí 
+        weaponHolder.SpawnWeapon();
+        // Các thiết lập khác trong OnInit()
+    }
+
+
+
+
+
+
+
+
+
 
     public void ChangeAnim(string animName)
     {
@@ -112,7 +159,7 @@ public class CharacterCtl : GameUnit
 
 
     //tìm mục tiêu gần nhất
-    private void FindEnemyTarget()
+    protected void FindEnemyTarget()
     {
         if (listEnemys.Count == 0) return;
 
@@ -130,30 +177,14 @@ public class CharacterCtl : GameUnit
 
     }
     // hàm thực hiện bắn 
-    IEnumerator CoFire()
+
+    public void ResetAttack()
     {
-        isAttack = true;
-        //tìm mục tiêu
-        FindEnemyTarget();
-
-        ChangeAnim(Constants.ANIM_ATTACK);
-
-        RotateTowardsTarget();
-
-        yield return new WaitForSeconds(1f);
-        //bắn 
-        RotateTowardsTarget();
-
-        currentWeapon.Fire(enemyTarget);
-
-        ChangeAnim(Constants.ANIM_IDLE);
-
-        isAttack = false;
-        attackCoroutine = null;
+        IsAttack = false;
     }
 
     // xoay nhân vật theo hướng enemy
-    private void RotateTowardsTarget()
+    protected void RotateTowardsTarget()
     {
         Vector3 direction = (enemyTarget.TF.position - TF.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
@@ -181,4 +212,6 @@ public class CharacterCtl : GameUnit
     {
         return pointTarget.transform.position;
     }
+
+    public bool HaveCharacterInAttackRange() => listEnemys.Count > 0;
 }

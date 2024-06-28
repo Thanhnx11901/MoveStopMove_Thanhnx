@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class AttackRange : MonoBehaviour
 {
-    public CharacterCtl characterCtlOner;
+    public CharacterCtl characterCtlOwner;
 
     private void OnTriggerEnter(Collider other)
     {
         CharacterCtl enemy = Cache<CharacterCtl>.GetCollider(other);
-        if (enemy != null)
+        if (enemy != null && enemy != characterCtlOwner)
         {
             // thêm vào Enemy vào list và thêm a
-            characterCtlOner.AddListEnemy(enemy);
-            characterCtlOner.AddEnemyDeadAction(enemy);
+            characterCtlOwner.AddListEnemy(enemy);
+            characterCtlOwner.AddEnemyDeadAction(enemy);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        CharacterCtl characterCtl = Cache<CharacterCtl>.GetCollider(other);
-        if (characterCtl != null)
+        CharacterCtl enemy = Cache<CharacterCtl>.GetCollider(other);
+        if (enemy != null && enemy != characterCtlOwner)
         {
-            characterCtlOner.RemoveEnemyFromList(characterCtl);
-            characterCtlOner.RemoveEnemyDeadAction(characterCtl);
+            characterCtlOwner.RemoveEnemyFromList(enemy);
+            characterCtlOwner.RemoveEnemyDeadAction(enemy);
         }
     }
 }
