@@ -6,8 +6,9 @@ using UnityEngine.Events;
 public class CharacterCtl : GameUnit
 {
     [SerializeField] protected CharacterConfig characterConfig;
+    [SerializeField] protected CapsuleCollider capsuleCollider;
     [SerializeField] protected WeaponHolder weaponHolder;
-
+    [SerializeField] protected GameObject targetObj;
     [SerializeField] protected Pant pant;
 
     private UnityAction OnDeathAction;
@@ -20,15 +21,25 @@ public class CharacterCtl : GameUnit
 
     [SerializeField] private Transform pointTarget;
 
+    // tầm đánh
+    [SerializeField] private float range;
+    // tốc độ đánh 
+    [SerializeField] private float attackSpeed;
+    // tốc độ di chuyển
+    [SerializeField] private float moveSpeed;
+
     //Mục tiêu bắn 
     public CharacterCtl enemyTarget;
     private bool isMoving;
+
+    private bool isDead;
 
     public bool IsMoving { get => isMoving; set => isMoving = value; }
     public bool IsAttack { get => isAttack; set => isAttack = value; }
     public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public float Range { get => Range; set => Range = value; }
+    public bool IsDead { get => isDead; set => isDead = value; }
 
     [SerializeField] Animator anim;
     private string animName;
@@ -44,6 +55,7 @@ public class CharacterCtl : GameUnit
     protected virtual void Awake()
     {
         IsAttack = false;
+        IsDead = false;
     }
 
     protected virtual void Start()
@@ -54,12 +66,18 @@ public class CharacterCtl : GameUnit
         OnInit();
     }
 
-    // tầm đánh
-    [SerializeField] private float range;
-    // tốc độ đánh 
-    [SerializeField] private float attackSpeed;
-    // tốc độ di chuyển
-    [SerializeField] private float moveSpeed;
+    protected virtual void Update() {
+    }
+
+    protected virtual void OnInit()
+    {
+        SetInitialAttackRange();
+        SetInitialAttackSpeed();
+        SetInitialMoveSpeed();
+        // sinh vũ khí 
+        weaponHolder.SpawnWeapon();
+        // Các thiết lập khác trong OnInit()
+    }
 
     // set tầm đánh
     public void SetInitialAttackRange()
@@ -79,41 +97,25 @@ public class CharacterCtl : GameUnit
         }
     }
 
-    public void SetInitialAttackSpeed(){
+    public void SetInitialAttackSpeed()
+    {
         attackSpeed = characterConfig.attackSpeed;
-        prepareAttackDuration = 1/ attackSpeed;
+        prepareAttackDuration = 1 / attackSpeed;
     }
-    public void AddAttackSpeed(float additionalattackRange){
+    public void AddAttackSpeed(float additionalattackRange)
+    {
         attackSpeed += additionalattackRange;
-        prepareAttackDuration = 1/ attackSpeed;
+        prepareAttackDuration = 1 / attackSpeed;
     }
 
-    public void SetInitialMoveSpeed(){
+    public void SetInitialMoveSpeed()
+    {
         moveSpeed = characterConfig.moveSpeed;
     }
-    public void AddMoveSpeed(float additionalMoveSpeed){
+    public void AddMoveSpeed(float additionalMoveSpeed)
+    {
         MoveSpeed += additionalMoveSpeed;
     }
-
-
-    protected virtual void OnInit()
-    {
-        SetInitialAttackRange();
-        SetInitialAttackSpeed();
-        SetInitialMoveSpeed();
-        // sinh vũ khí 
-        weaponHolder.SpawnWeapon();
-        // Các thiết lập khác trong OnInit()
-    }
-
-
-
-
-
-
-
-
-
 
     public void ChangeAnim(string animName)
     {
@@ -157,9 +159,8 @@ public class CharacterCtl : GameUnit
         }
     }
 
-
     //tìm mục tiêu gần nhất
-    protected void FindEnemyTarget()
+    protected virtual void FindEnemyTarget()
     {
         if (listEnemys.Count == 0) return;
 
@@ -174,7 +175,6 @@ public class CharacterCtl : GameUnit
                 enemyTarget = listEnemys[i];
             }
         }
-
     }
     // hàm thực hiện bắn 
 
@@ -191,14 +191,16 @@ public class CharacterCtl : GameUnit
         TF.rotation = lookRotation;
     }
     // chết thì gọi hàm này
-    public void Die()
+    public virtual void Die()
     {
         StartCoroutine(CoDead(2f));
     }
     // thực hiện xóa khỏi list, anim dead và đợi 1 khoảng thời gian thì xóa tự xóa đi 
-    IEnumerator CoDead(float time)
+    public IEnumerator CoDead(float time)
     {
         OnDeathAction?.Invoke();
+        IsDead = true;
+        capsuleCollider.enabled = false;
         ChangeAnim(Constants.ANIM_DEAD);
         yield return new WaitForSeconds(time);
         Destroy(gameObject);
@@ -214,4 +216,9 @@ public class CharacterCtl : GameUnit
     }
 
     public bool HaveCharacterInAttackRange() => listEnemys.Count > 0;
+
+    public void setActiveTarget(bool isActive){
+        if(targetObj == null) return;
+        targetObj.gameObject.SetActive(isActive);
+    }
 }

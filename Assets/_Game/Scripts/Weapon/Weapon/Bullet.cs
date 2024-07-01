@@ -30,7 +30,7 @@ public class Bullet : GameUnit
         CharacterCtl characterCtl = Cache<CharacterCtl>.GetCollider(other);
         if (characterCtl != null && characterCtl != owner) 
         {
-            owner.AddAttackRange(0.01f);
+            //owner.AddAttackRange(0.01f);
             OnDespawn();
             //characterCtl.Die();
         }

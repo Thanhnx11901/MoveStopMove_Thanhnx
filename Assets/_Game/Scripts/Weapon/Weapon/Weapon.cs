@@ -41,7 +41,7 @@ public class Weapon : GameUnit
     private float timeDespawn;
 
     private void Awake() {
-        TimeDespawn = 1.5f;
+        TimeDespawn = 1f;
     }
 
     [SerializeField] private MeshRenderer meshRenderer;

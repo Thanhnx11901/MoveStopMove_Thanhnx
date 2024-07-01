@@ -25,5 +25,11 @@ public class AttackRange : MonoBehaviour
             characterCtlOwner.RemoveEnemyFromList(enemy);
             characterCtlOwner.RemoveEnemyDeadAction(enemy);
         }
+        BotCtl bot = Cache<BotCtl>.GetCollider(other);
+        if (bot != null && bot != characterCtlOwner)
+        {
+            bot.setActiveTarget(false);
+        }
+
     }
 }

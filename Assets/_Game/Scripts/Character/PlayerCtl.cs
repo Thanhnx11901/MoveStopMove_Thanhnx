@@ -25,8 +25,9 @@ public class PlayerCtl : CharacterCtl
         base.OnInit();
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         Move();
     }
     private void Move()
@@ -59,7 +60,7 @@ public class PlayerCtl : CharacterCtl
                 }
             }
         }
-        if (!IsAttack && !IsPlayerMoving())
+        if (!IsAttack && !IsPlayerMoving() && !IsDead)
         {
             ChangeAnim(Constants.ANIM_IDLE);
         }
@@ -68,11 +69,12 @@ public class PlayerCtl : CharacterCtl
     private void AttackCharacterInRange()
     {
         FindEnemyTarget();
-        ChangeAnim(Constants.ANIM_ATTACK);
+        
         RotateTowardsTarget();
         prepareAttackCounter += Time.deltaTime;
         if (prepareAttackCounter >= prepareAttackDuration)
         {
+            ChangeAnim(Constants.ANIM_ATTACK);
             // tan  cong
             StartCoroutine(CoFire());
             // them ham tan cong va trong khi tan cong thi khong di chuyen duoc 
@@ -92,8 +94,6 @@ public class PlayerCtl : CharacterCtl
     }
     IEnumerator CoFire()
     {
-        Debug.Log("attack");
-
         IsAttack = true;
 
         IsMoving = false;
@@ -108,5 +108,24 @@ public class PlayerCtl : CharacterCtl
         //ChangeAnim(Constants.ANIM_IDLE);
 
         IsMoving = true;
+    }
+
+    protected override void FindEnemyTarget()
+    {
+        if (listEnemys.Count == 0) return;
+
+        float minDistance = float.MaxValue;
+
+        for (int i = 0; i < listEnemys.Count; i++)
+        {
+            float distance = Vector3.Distance(transform.position, listEnemys[i].transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                if(enemyTarget != null) enemyTarget.setActiveTarget(false);
+                enemyTarget = listEnemys[i];
+                enemyTarget.setActiveTarget(true);
+            }
+        }
     }
 }
