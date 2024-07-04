@@ -145,14 +145,10 @@ public enum PoolType
 {
     None,
     Axe,
-
-    Bullet_1,
-    Bullet_2,
-    Bullet_3,
-    Bullet_4,
     Hammer,
     Candy,
     Boomerang,
+    Bot,
 }
 
 

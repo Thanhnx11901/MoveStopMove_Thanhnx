@@ -17,6 +17,13 @@ public class Constants
 
     public const string CURRENT_PANT = "CurrentPant";
 
+    public const string HAMMER = "Hammer";
+
+    public const string CANDY = "Candy";
+    public const string BOOMERANG = "Boomerang";
+
+
+
 
 
 

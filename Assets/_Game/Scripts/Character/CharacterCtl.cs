@@ -5,46 +5,36 @@ using UnityEngine.Events;
 
 public class CharacterCtl : GameUnit
 {
+    [SerializeField] private Animator anim;
     [SerializeField] protected CharacterConfig characterConfig;
     [SerializeField] protected CapsuleCollider capsuleCollider;
-    [SerializeField] protected WeaponHolder weaponHolder;
+    [SerializeField] private WeaponHolder weaponHolder;
     [SerializeField] protected GameObject targetObj;
     [SerializeField] protected Pant pant;
 
     private UnityAction OnDeathAction;
-    public List<CharacterCtl> listEnemys;
+    public List<CharacterCtl> listEnemys = new List<CharacterCtl>();
     //vũ khí
-    public Weapon currentWeapon;
+    public Weapon CurrentWeapon { get; set; }
+    public EWeapon ECurrentWeapon { get; set; }
 
     [SerializeField] protected AttackRange attackRange;
     [SerializeField] private Transform pointShoot;
 
     [SerializeField] private Transform pointTarget;
 
-    // tầm đánh
-    [SerializeField] private float range;
-    // tốc độ đánh 
-    [SerializeField] private float attackSpeed;
-    // tốc độ di chuyển
-    [SerializeField] private float moveSpeed;
-
     //Mục tiêu bắn 
     public CharacterCtl enemyTarget;
-    private bool isMoving;
 
-    private bool isDead;
+    public bool IsMoving { get; set; }
+    public bool IsAttack { get; set; }
+    public float AttackSpeed { get; set; }
+    public float MoveSpeed { get; set; }
+    public float Range { get; set; }
+    public bool IsDead { get ; set; }
+    public WeaponHolder WeaponHolder => weaponHolder;
 
-    public bool IsMoving { get => isMoving; set => isMoving = value; }
-    public bool IsAttack { get => isAttack; set => isAttack = value; }
-    public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
-    public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
-    public float Range { get => Range; set => Range = value; }
-    public bool IsDead { get => isDead; set => isDead = value; }
-
-    [SerializeField] Animator anim;
-    private string animName;
-
-    private bool isAttack;
+    private string animName = Constants.ANIM_IDLE;
 
     private Dictionary<CharacterCtl, UnityAction> onDeathActions = new Dictionary<CharacterCtl, UnityAction>();
 
@@ -55,28 +45,24 @@ public class CharacterCtl : GameUnit
     protected virtual void Awake()
     {
         IsAttack = false;
-        IsDead = false;
+        
     }
 
     protected virtual void Start()
     {
-        animName = Constants.ANIM_IDLE;
         ChangeAnim(Constants.ANIM_IDLE);
-        listEnemys = new List<CharacterCtl>();
         OnInit();
     }
 
     protected virtual void Update() {
     }
 
-    protected virtual void OnInit()
+    public virtual void OnInit()
     {
+        IsDead = false;
         SetInitialAttackRange();
         SetInitialAttackSpeed();
         SetInitialMoveSpeed();
-        // sinh vũ khí 
-        weaponHolder.SpawnWeapon();
-        // Các thiết lập khác trong OnInit()
     }
 
     // set tầm đánh
@@ -84,35 +70,53 @@ public class CharacterCtl : GameUnit
     {
         if (attackRange != null)
         {
-            range = characterConfig.attackRange;
-            attackRange.transform.localScale = new Vector3(range, 0.1f, range);
+            Range = characterConfig.attackRange;
+            attackRange.transform.localScale = new Vector3(Range, 0.1f, Range);
         }
     }
     public void AddAttackRange(float additionalRange)
     {
-        range += additionalRange;
+        Range += additionalRange;
         if (attackRange != null)
         {
-            attackRange.transform.localScale = new Vector3(range, 0.1f, range);
+            attackRange.transform.localScale = new Vector3(Range, 0.1f, Range);
+        }
+    }
+
+    public void DelAttackRange(float additionalRange)
+    {
+        Range -= additionalRange;
+        if (attackRange != null)
+        {
+            attackRange.transform.localScale = new Vector3(Range, 0.1f, Range);
         }
     }
 
     public void SetInitialAttackSpeed()
     {
-        attackSpeed = characterConfig.attackSpeed;
-        prepareAttackDuration = 1 / attackSpeed;
+        AttackSpeed = characterConfig.attackSpeed;
+        prepareAttackDuration = 1 / AttackSpeed;
     }
     public void AddAttackSpeed(float additionalattackRange)
     {
-        attackSpeed += additionalattackRange;
-        prepareAttackDuration = 1 / attackSpeed;
+        AttackSpeed += additionalattackRange;
+        prepareAttackDuration = 1 / AttackSpeed;
+    }
+    public void DelAttackSpeed(float additionalattackRange)
+    {
+        AttackSpeed += additionalattackRange;
+        prepareAttackDuration = 1 / AttackSpeed;
     }
 
     public void SetInitialMoveSpeed()
     {
-        moveSpeed = characterConfig.moveSpeed;
+        MoveSpeed = characterConfig.moveSpeed;
     }
     public void AddMoveSpeed(float additionalMoveSpeed)
+    {
+        MoveSpeed += additionalMoveSpeed;
+    }
+    public void DelMoveSpeed(float additionalMoveSpeed)
     {
         MoveSpeed += additionalMoveSpeed;
     }

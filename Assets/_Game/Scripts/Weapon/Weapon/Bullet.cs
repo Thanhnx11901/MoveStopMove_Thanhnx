@@ -13,7 +13,7 @@ public class Bullet : GameUnit
         StartCoroutine(CoDespawn(timeDespawn));
         this.owner = oner;
     }
-
+    // hủy đạn khi sinh ra trong 1 khoảng thời gian 
     IEnumerator CoDespawn(float timeDespawn){
         yield return new WaitForSeconds(timeDespawn);
         OnDespawn();
@@ -23,7 +23,7 @@ public class Bullet : GameUnit
     {
         SimplePool.Despawn(this);
         owner.ResetAttack();
-        owner.currentWeapon.ActiveMeshRenderer(true);   
+        owner.CurrentWeapon.ActiveMeshRenderer(true);   
     }
     protected virtual void OnTriggerEnter(Collider other)
     {

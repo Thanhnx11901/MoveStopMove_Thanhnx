@@ -6,6 +6,7 @@ using UnityEngine.Animations;
 
 public class PlayerCtl : CharacterCtl
 {
+    [SerializeField] private VariableJoystick variableJoystick;
     [SerializeField] private Rigidbody rb;
 
     private float horizontal;
@@ -20,9 +21,13 @@ public class PlayerCtl : CharacterCtl
     {
         base.Start();
     }
-    protected override void OnInit()
+    public override void OnInit()
     {
         base.OnInit();
+        //sinh vũ khí 
+        EWeapon eWeapon = (EWeapon)PlayerPrefs.GetInt(Constants.CURRENT_WEAPON);
+        WeaponHolder.ChangeWeapon(eWeapon);
+
     }
 
     protected override void Update()
@@ -32,10 +37,18 @@ public class PlayerCtl : CharacterCtl
     }
     private void Move()
     {
+        if (!GameManager.IsState(GameState.GamePlay)) return;
+        if(IsDead) {
+            rb.velocity = Vector3.zero;
+            return;
+        }
         if (IsMoving)
         {
-            horizontal = Input.GetAxis("Horizontal");
-            vertical = Input.GetAxis("Vertical");
+            horizontal = variableJoystick.Horizontal;
+            vertical = variableJoystick.Vertical;
+        }
+        if(Math.Abs(horizontal) < 0.00001f && Math.Abs(vertical) < 0.00001f){
+            rb.velocity = Vector3.zero;
         }
         // khi player di chuyển
         if (IsPlayerMoving())
@@ -63,6 +76,9 @@ public class PlayerCtl : CharacterCtl
         if (!IsAttack && !IsPlayerMoving() && !IsDead)
         {
             ChangeAnim(Constants.ANIM_IDLE);
+        }
+        if(IsDead){
+            prepareAttackCounter = 0;
         }
     }
 
@@ -102,8 +118,8 @@ public class PlayerCtl : CharacterCtl
         
         yield return new WaitForSeconds(.2f);
         
-        currentWeapon.ActiveMeshRenderer(false);
-        currentWeapon.Fire(enemyTarget);
+        CurrentWeapon.ActiveMeshRenderer(false);
+        CurrentWeapon.Fire(enemyTarget);
         
         //ChangeAnim(Constants.ANIM_IDLE);
 

@@ -6,41 +6,24 @@ public class WeaponHolder : MonoBehaviour
 {
     [SerializeField] private CharacterCtl owner;
     [SerializeField] private WeaponConfig weaponConfig;
-    public Weapon weaponPrefab;
-    private void Awake()
-    {
-        PlayerPrefs.SetInt(Constants.CURRENT_WEAPON, 0);
+    // xóa tầm đánh và tốc độ đánh của vũ khí trước
+    public void DelWeapon(){
+        owner.DelAttackRange(owner.CurrentWeapon.Range);
+        owner.DelAttackSpeed(owner.CurrentWeapon.AttackSpeed);
+        Destroy(owner.CurrentWeapon.gameObject);
     }
-    private void Start()
-    {
-        int indexWeapon = PlayerPrefs.GetInt(Constants.CURRENT_WEAPON);
-        weaponPrefab = weaponConfig.GetWeapon(indexWeapon);
-
-    }
-    public void SpawnWeapon()
-    {
-        Weapon weapon = Instantiate(weaponPrefab, transform);
+    public void ChangeWeapon(EWeapon eWeapon){
+        if(owner.CurrentWeapon != null) DelWeapon();
+        //lưu vũ khí
+        PlayerPrefs.SetInt(Constants.CURRENT_WEAPON, (int)eWeapon);
+        //sinh vũ khí
+        Weapon weapon = Instantiate(weaponConfig.GetWeapon(eWeapon), transform);
         weapon.Owner = owner;
-        owner.currentWeapon = weapon;
-
-        // weapon.TF.localPosition = new Vector3(-0.45f, 0.389f, 0.042f);
-        // weapon.TF.localRotation = Quaternion.Euler(0, 0, 78);
-
-
-        // hammer
-
-        //set vị trí
-        weapon.TF.localPosition = new Vector3(-0.1f, 0.45f, 0.05f);
-        weapon.TF.localRotation = Quaternion.Euler(165, 0, -50);
+        owner.CurrentWeapon = weapon;
+        owner.ECurrentWeapon = eWeapon;
+        weapon.TF.localPosition = weapon.Position;
+        weapon.TF.localRotation = Quaternion.Euler(weapon.Rotation);
         owner.AddAttackRange(weapon.Range);
         owner.AddAttackSpeed(weapon.AttackSpeed);
-
-        //set 
-        // tốc độ đánh
-
-        // tầm đánh 
-
-
     }
-
 }

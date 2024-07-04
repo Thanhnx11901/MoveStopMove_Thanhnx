@@ -15,7 +15,7 @@ public class Pant : MonoBehaviour
     private void Start() {
         ChangePant(PlayerPrefs.GetInt(Constants.CURRENT_PANT));
     }
-    public void ChangePant(int indexPant){
+    public void ChangePant(int indexPant){ 
         skinnedMeshRenderer.material = pantConfig.GetMaterialPant(indexPant);
     }
 }

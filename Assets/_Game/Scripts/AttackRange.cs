@@ -15,6 +15,12 @@ public class AttackRange : MonoBehaviour
             characterCtlOwner.AddListEnemy(enemy);
             characterCtlOwner.AddEnemyDeadAction(enemy);
         }
+        if(characterCtlOwner is PlayerCtl){
+            Decor decor = Cache<Decor>.GetCollider(other);
+            if(decor != null){
+                decor.SetMetarialShader();
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -29,6 +35,12 @@ public class AttackRange : MonoBehaviour
         if (bot != null && bot != characterCtlOwner)
         {
             bot.setActiveTarget(false);
+        }
+        if(characterCtlOwner is PlayerCtl){
+            Decor decor = Cache<Decor>.GetCollider(other);
+            if(decor != null){
+                decor.SetMetarial();
+            }
         }
 
     }

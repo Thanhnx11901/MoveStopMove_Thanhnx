@@ -9,6 +9,6 @@ public class Candy : Weapon
         Bullet bullet = SimplePool.Spawn<CandyBullet>(PoolType.Candy);
         bullet.TF.position = Owner.GetPointShoot();
         Vector3 bulletDirection = enemy.GetPointShoot() - Owner.GetPointShoot();
-        bullet.OnInit(bulletDirection,Owner,TimeDespawn);
+        bullet.OnInit(bulletDirection, Owner, TimeDespawn);
     }
 }

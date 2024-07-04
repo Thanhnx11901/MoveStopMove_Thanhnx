@@ -7,13 +7,12 @@ public class BotCtl : CharacterCtl
 {
     [SerializeField] private NavMeshAgent agent;
     private IState<BotCtl> currentState;
-    private IdleState idleState;
-    private PatrolState patrolState;
-    private AttackState attackState;
+    private IdleState idleState = new IdleState();
+    private PatrolState patrolState = new PatrolState();
+    private AttackState attackState = new AttackState();
+    private DieState dieState = new DieState();
 
-    private DieState dieState;
-
-    public NavMeshAgent Agent { get => agent; }
+    public NavMeshAgent Agent => agent;
     public IdleState IdleState { get => idleState; set => idleState = value; }
     public PatrolState PatrolState { get => patrolState; set => patrolState = value; }
     public AttackState AttackState { get => attackState; set => attackState = value; }
@@ -22,11 +21,13 @@ public class BotCtl : CharacterCtl
     protected override void Start()
     {
         base.Start();
-        IdleState = new IdleState();
-        PatrolState = new PatrolState();
-        AttackState = new AttackState();
-        DieState = new DieState();
         ChangeState(IdleState);
+    }
+    public override void OnInit()
+    {
+        base.OnInit();
+        //sinh vũ khí cho bot
+        WeaponHolder.ChangeWeapon(EWeapon.Candy);
     }
     protected override void Update()
     {
@@ -69,7 +70,6 @@ public class BotCtl : CharacterCtl
         // Vector3 randomPosition = new Vector3(randomPoint2D.x, 0, randomPoint2D.y) + TF.position;
         // return randomPosition;
 
-
         Vector3 randomDirection = Random.insideUnitSphere * 10f; 
         randomDirection += TF.position;
         NavMeshHit hit;
@@ -100,8 +100,8 @@ public class BotCtl : CharacterCtl
 
         yield return new WaitForSeconds(.2f);
 
-        currentWeapon.ActiveMeshRenderer(false);
-        currentWeapon.Fire(enemyTarget);
+        CurrentWeapon.ActiveMeshRenderer(false);
+        CurrentWeapon.Fire(enemyTarget);
 
         //ChangeAnim(Constants.ANIM_IDLE);
     }
@@ -109,6 +109,6 @@ public class BotCtl : CharacterCtl
     {
         ChangeState(DieState);
         base.Die();
+        LevelManager.Ins.currentLevel.removeBotWhenDead(this);
     }
-
 }

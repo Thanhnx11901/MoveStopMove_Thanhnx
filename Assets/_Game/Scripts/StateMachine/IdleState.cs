@@ -17,6 +17,7 @@ public class IdleState : IState<BotCtl>
 
     public void OnExecute(BotCtl t)
     {
+        if (!GameManager.IsState(GameState.GamePlay)) return;
         if(timer > randomTime){
             t.ChangeState(t.PatrolState);
         }
