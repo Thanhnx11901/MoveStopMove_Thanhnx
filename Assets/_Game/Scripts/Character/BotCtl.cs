@@ -26,6 +26,8 @@ public class BotCtl : CharacterCtl
     public override void OnInit()
     {
         base.OnInit();
+
+
         //sinh vũ khí cho bot
         WeaponHolder.ChangeWeapon(EWeapon.Candy);
     }
@@ -103,7 +105,6 @@ public class BotCtl : CharacterCtl
         CurrentWeapon.ActiveMeshRenderer(false);
         CurrentWeapon.Fire(enemyTarget);
 
-        //ChangeAnim(Constants.ANIM_IDLE);
     }
     public override void Die()
     {

@@ -14,8 +14,13 @@ public class Constants
 
     // lưu dữ liệu
     public const string CURRENT_WEAPON = "CurrentWeapon";
+    
+    public const string CURRENT_SKIN = "CurrentSkin";
 
     public const string CURRENT_PANT = "CurrentPant";
+    public const string CURRENT_HAIR = "CurrentHair";
+    public const string CURRENT_SHIELD = "CurrentShield";
+
 
     public const string HAMMER = "Hammer";
 

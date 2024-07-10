@@ -37,6 +37,7 @@ public class PlayerCtl : CharacterCtl
     }
     private void Move()
     {
+        
         if (!GameManager.IsState(GameState.GamePlay)) return;
         if(IsDead) {
             rb.velocity = Vector3.zero;
@@ -119,10 +120,7 @@ public class PlayerCtl : CharacterCtl
         yield return new WaitForSeconds(.2f);
         
         CurrentWeapon.ActiveMeshRenderer(false);
-        CurrentWeapon.Fire(enemyTarget);
-        
-        //ChangeAnim(Constants.ANIM_IDLE);
-
+        CurrentWeapon.Fire(enemyTarget);        
         IsMoving = true;
     }
 
@@ -143,5 +141,10 @@ public class PlayerCtl : CharacterCtl
                 enemyTarget.setActiveTarget(true);
             }
         }
+    }
+
+    public void IsActiveSkin(bool isActive){
+        if(CurrentHair != null) CurrentHair.gameObject.SetActive(isActive);
+        if(CurrentShield != null) CurrentShield.gameObject.SetActive(isActive);
     }
 }

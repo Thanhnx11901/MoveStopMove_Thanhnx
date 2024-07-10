@@ -9,6 +9,8 @@ public class CameraFollow : MonoBehaviour
     public Vector3 offset_GamePlay; // Độ lệch vị trí giữa camera và người chơi
 
     public Vector3 offset_GameMainNenu;
+    public Vector3 offset_GameSkin;
+
 
 
     void FixedUpdate()
@@ -43,6 +45,23 @@ public class CameraFollow : MonoBehaviour
                 transform.position = smoothedPosition;
 
                 transform.rotation = Quaternion.Euler(new Vector3(25,0,0));
+            }
+        }
+
+        if (GameManager.IsState(GameState.ShopSkin)) {
+
+            if (playerTransform != null)
+            {
+                // Tính toán vị trí mục tiêu của camera dựa trên vị trí hiện tại của người chơi và offset
+                Vector3 desiredPosition = playerTransform.position + offset_GameSkin;
+
+                // Sử dụng phương pháp Interpolation để làm cho camera mượt mà hơn
+                Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+
+                // Cập nhật vị trí của camera đến vị trí mục tiêu mượt mà hơn
+                transform.position = smoothedPosition;
+
+                transform.rotation = Quaternion.Euler(new Vector3(35,0,0));
             }
         }
     }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class WeaponHolder : MonoBehaviour
 {
     [SerializeField] private CharacterCtl owner;
-    [SerializeField] private WeaponConfig weaponConfig;
     // xóa tầm đánh và tốc độ đánh của vũ khí trước
     public void DelWeapon(){
         owner.DelAttackRange(owner.CurrentWeapon.Range);
@@ -17,12 +16,14 @@ public class WeaponHolder : MonoBehaviour
         //lưu vũ khí
         PlayerPrefs.SetInt(Constants.CURRENT_WEAPON, (int)eWeapon);
         //sinh vũ khí
-        Weapon weapon = Instantiate(weaponConfig.GetWeapon(eWeapon), transform);
+        Weapon weapon = Instantiate(GameData.Ins.weaponConfig.GetWeapon(eWeapon), transform);
         weapon.Owner = owner;
         owner.CurrentWeapon = weapon;
         owner.ECurrentWeapon = eWeapon;
         weapon.TF.localPosition = weapon.Position;
         weapon.TF.localRotation = Quaternion.Euler(weapon.Rotation);
+
+        // thêm tầm đánh hoặc tốc độ đánh 
         owner.AddAttackRange(weapon.Range);
         owner.AddAttackSpeed(weapon.AttackSpeed);
     }

@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public enum GameState{
     MainMenu = 0,
     GamePlay = 1,
+    ShopSkin = 2,
 }
 
 public class GameManager : Singleton<GameManager>

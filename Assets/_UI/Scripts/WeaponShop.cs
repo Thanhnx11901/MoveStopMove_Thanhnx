@@ -8,7 +8,6 @@ public class WeaponShop : UICanvas
 {
     private PlayerCtl playerCtl;
     [SerializeField] private WeaponConfig weaponConfig;
-    private List<Weapon> weapons;
     [SerializeField] private Text textNameWeapon;
     [SerializeField] private Text textAddPower;
     [SerializeField] private Text textMoney;

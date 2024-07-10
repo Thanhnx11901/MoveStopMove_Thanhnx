@@ -6,9 +6,12 @@ using UnityEngine.Events;
 public class CharacterCtl : GameUnit
 {
     [SerializeField] private Animator anim;
-    [SerializeField] protected CharacterConfig characterConfig;
     [SerializeField] protected CapsuleCollider capsuleCollider;
+
+    [SerializeField] protected ChangeSkinPlayer changeSkinPlayer;
     [SerializeField] private WeaponHolder weaponHolder;
+    [SerializeField] private HairHolder hairHolder;
+    [SerializeField] private ShieldHolder shieldHolder;
     [SerializeField] protected GameObject targetObj;
     [SerializeField] protected Pant pant;
 
@@ -18,7 +21,17 @@ public class CharacterCtl : GameUnit
     public Weapon CurrentWeapon { get; set; }
     public EWeapon ECurrentWeapon { get; set; }
 
-    [SerializeField] protected AttackRange attackRange;
+
+    // skin 
+    public Hair CurrentHair { get; set; }
+    public EHair ECurrentHair { get; set; }
+
+    public Shield CurrentShield { get; set; }
+    public EShield ECurrentShield { get; set; }
+
+    public SkinCharacter CurrentSkinCharacter { get; set; }
+
+
     [SerializeField] private Transform pointShoot;
 
     [SerializeField] private Transform pointTarget;
@@ -31,8 +44,12 @@ public class CharacterCtl : GameUnit
     public float AttackSpeed { get; set; }
     public float MoveSpeed { get; set; }
     public float Range { get; set; }
-    public bool IsDead { get ; set; }
+    public bool IsDead { get; set; }
     public WeaponHolder WeaponHolder => weaponHolder;
+    public HairHolder HairHolder => hairHolder;
+    public ShieldHolder ShieldHolder => shieldHolder;
+
+    public ChangeSkinPlayer ChangeSkinPlayer => changeSkinPlayer;
 
     private string animName = Constants.ANIM_IDLE;
 
@@ -45,7 +62,10 @@ public class CharacterCtl : GameUnit
     protected virtual void Awake()
     {
         IsAttack = false;
-        
+        ECurrentHair = EHair.None;
+        ECurrentShield = EShield.None;
+        CurrentSkinCharacter = SkinCharacter.None;
+
     }
 
     protected virtual void Start()
@@ -54,47 +74,45 @@ public class CharacterCtl : GameUnit
         OnInit();
     }
 
-    protected virtual void Update() {
+    protected virtual void Update()
+    {
     }
 
     public virtual void OnInit()
     {
         IsDead = false;
+        SetScale(1f);
+        // set thông số ban đầu
         SetInitialAttackRange();
         SetInitialAttackSpeed();
         SetInitialMoveSpeed();
+    }
+    public void SetScale(float scale)
+    {
+        TF.localScale = Vector3.one * scale;
     }
 
     // set tầm đánh
     public void SetInitialAttackRange()
     {
-        if (attackRange != null)
-        {
-            Range = characterConfig.attackRange;
-            attackRange.transform.localScale = new Vector3(Range, 0.1f, Range);
-        }
+        Range = GameData.Ins.characterConfig.attackRange;
+        TF.localScale = Vector3.one * Range;
     }
     public void AddAttackRange(float additionalRange)
     {
         Range += additionalRange;
-        if (attackRange != null)
-        {
-            attackRange.transform.localScale = new Vector3(Range, 0.1f, Range);
-        }
+        TF.localScale = Vector3.one * Range;
     }
 
     public void DelAttackRange(float additionalRange)
     {
         Range -= additionalRange;
-        if (attackRange != null)
-        {
-            attackRange.transform.localScale = new Vector3(Range, 0.1f, Range);
-        }
+        TF.localScale = Vector3.one * Range;
     }
 
     public void SetInitialAttackSpeed()
     {
-        AttackSpeed = characterConfig.attackSpeed;
+        AttackSpeed = GameData.Ins.characterConfig.attackSpeed;
         prepareAttackDuration = 1 / AttackSpeed;
     }
     public void AddAttackSpeed(float additionalattackRange)
@@ -110,7 +128,7 @@ public class CharacterCtl : GameUnit
 
     public void SetInitialMoveSpeed()
     {
-        MoveSpeed = characterConfig.moveSpeed;
+        MoveSpeed = GameData.Ins.characterConfig.moveSpeed;
     }
     public void AddMoveSpeed(float additionalMoveSpeed)
     {
@@ -221,8 +239,9 @@ public class CharacterCtl : GameUnit
 
     public bool HaveCharacterInAttackRange() => listEnemys.Count > 0;
 
-    public void setActiveTarget(bool isActive){
-        if(targetObj == null) return;
+    public void setActiveTarget(bool isActive)
+    {
+        if (targetObj == null) return;
         targetObj.gameObject.SetActive(isActive);
     }
 }

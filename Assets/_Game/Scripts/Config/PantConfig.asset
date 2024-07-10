@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PantConfig
   m_EditorClassIdentifier: 
   materialPant:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 2ee401ea7625648e38d431459fe865ac, type: 2}
   - {fileID: 2100000, guid: 86762070e033e4783926b159654212ef, type: 2}
   - {fileID: 2100000, guid: 77a0ee50f55c64481a81476923f940c9, type: 2}
   - {fileID: 2100000, guid: 8e533fa5f21684541b92316d46d89f3a, type: 2}

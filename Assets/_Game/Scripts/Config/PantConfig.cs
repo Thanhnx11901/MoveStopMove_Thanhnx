@@ -22,7 +22,7 @@ public class PantConfig : ScriptableObject
 {
     public List<Material> materialPant; 
 
-    public Material GetMaterialPant(int indexPant){
-        return materialPant[indexPant];
+    public Material GetMaterialPant(EPant ePant){
+        return materialPant[(int)ePant];
     }
 }

@@ -17,6 +17,8 @@ public class MianMenu : UICanvas
     } 
     public void SkinButton()
     {
+        GameManager.ChangeState(GameState.ShopSkin);
+        LevelManager.Ins.playerCtl.ChangeSkinPlayer.ChangeSkinDefault();
         UIManager.Ins.OpenUI<SkinShop>();
         Close(0);
     } 

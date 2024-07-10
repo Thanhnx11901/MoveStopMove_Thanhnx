@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   attackSpeed: 2
-  attackRange: 15
+  attackRange: 1
