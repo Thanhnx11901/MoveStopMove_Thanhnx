@@ -21,6 +21,7 @@ public class Constants
     public const string CURRENT_HAIR = "CurrentHair";
     public const string CURRENT_SHIELD = "CurrentShield";
 
+    public const string CURRENT_SET = "CurrentSet";
 
     public const string HAMMER = "Hammer";
 

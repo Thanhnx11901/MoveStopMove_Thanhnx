@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class BotCtl : CharacterCtl
     public AttackState AttackState { get => attackState; set => attackState = value; }
     public DieState DieState { get => dieState; set => dieState = value; }
 
+    [SerializeField] private ChangeSkinBot changeSkinBot;
     protected override void Start()
     {
         base.Start();
@@ -26,10 +28,9 @@ public class BotCtl : CharacterCtl
     public override void OnInit()
     {
         base.OnInit();
-
-
         //sinh vũ khí cho bot
-        WeaponHolder.ChangeWeapon(EWeapon.Candy);
+        WeaponHolder.ChangeWeapon(GetRandomEnumValue<EWeapon>());
+        changeSkinBot.LoadSkinRandom();
     }
     protected override void Update()
     {
@@ -72,7 +73,7 @@ public class BotCtl : CharacterCtl
         // Vector3 randomPosition = new Vector3(randomPoint2D.x, 0, randomPoint2D.y) + TF.position;
         // return randomPosition;
 
-        Vector3 randomDirection = Random.insideUnitSphere * 10f; 
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * 10f; 
         randomDirection += TF.position;
         NavMeshHit hit;
         NavMesh.SamplePosition(randomDirection, out hit, 10f, NavMesh.AllAreas); 
@@ -111,5 +112,12 @@ public class BotCtl : CharacterCtl
         ChangeState(DieState);
         base.Die();
         LevelManager.Ins.currentLevel.removeBotWhenDead(this);
+    }
+
+    public T GetRandomEnumValue<T>() where T : Enum
+    {
+        T[] values = (T[])Enum.GetValues(typeof(T));
+        int randomIndex = UnityEngine.Random.Range(0, values.Length);
+        return values[randomIndex];
     }
 }

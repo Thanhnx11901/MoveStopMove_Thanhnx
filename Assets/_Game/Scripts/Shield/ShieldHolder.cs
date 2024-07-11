@@ -15,9 +15,6 @@ public class ShieldHolder : MonoBehaviour
     public void ChangeShield(EShield eShield)
     {
         if(owner.CurrentShield != null) DelShield();
-        PlayerPrefs.SetInt(Constants.CURRENT_SKIN,(int)Skin.Shiel);
-
-        PlayerPrefs.SetInt(Constants.CURRENT_SHIELD, (int)eShield);
 
         Shield shield = Instantiate(GameData.Ins.shieldConfig.GetShield(eShield), transform);
         shield.OnInit();

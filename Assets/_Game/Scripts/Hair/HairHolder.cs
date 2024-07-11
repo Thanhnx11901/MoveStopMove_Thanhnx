@@ -19,10 +19,6 @@ public class HairHolder : MonoBehaviour
         
         if(owner.CurrentHair != null) DelHair();
 
-        PlayerPrefs.SetInt(Constants.CURRENT_SKIN,(int)Skin.Hair);
-
-        PlayerPrefs.SetInt(Constants.CURRENT_HAIR, (int)eHair);
-
         Hair hair = Instantiate(GameData.Ins.hairConfig.GetHair(eHair), transform);
         hair.OnInit();
 

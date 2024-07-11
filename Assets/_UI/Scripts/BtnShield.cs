@@ -11,6 +11,9 @@ public class BtnShield : MonoBehaviour
     private int idSkin;
     private int id;
     private EShield eShield;
+
+    public GameObject imgSelect;
+
     public void OnInit(Shield shield, EShield eShield, int idSkin, int id, SkinShop skinShop)
     {
         Shield prefabShield = Instantiate(shield, transform);
@@ -46,6 +49,12 @@ public class BtnShield : MonoBehaviour
         else if (PlayerPrefs.GetInt(eShield.ToString()) == 0)
         {
             imgLock.SetActive(true);
+        }
+        if(skinShop.idSkin == idSkin && skinShop.id == id){
+            imgSelect.SetActive(true);
+        }
+        else{
+            imgSelect.SetActive(false);
         }
     }
 

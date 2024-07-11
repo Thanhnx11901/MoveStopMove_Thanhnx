@@ -12,8 +12,10 @@ public class CharacterCtl : GameUnit
     [SerializeField] private WeaponHolder weaponHolder;
     [SerializeField] private HairHolder hairHolder;
     [SerializeField] private ShieldHolder shieldHolder;
+
+    [SerializeField] private SetHolder setHolder;
     [SerializeField] protected GameObject targetObj;
-    [SerializeField] protected Pant pant;
+    [SerializeField] private Pant pant;
 
     private UnityAction OnDeathAction;
     public List<CharacterCtl> listEnemys = new List<CharacterCtl>();
@@ -29,7 +31,7 @@ public class CharacterCtl : GameUnit
     public Shield CurrentShield { get; set; }
     public EShield ECurrentShield { get; set; }
 
-    public SkinCharacter CurrentSkinCharacter { get; set; }
+    public ESet ECurrentSet { get; set; }
 
 
     [SerializeField] private Transform pointShoot;
@@ -49,6 +51,10 @@ public class CharacterCtl : GameUnit
     public HairHolder HairHolder => hairHolder;
     public ShieldHolder ShieldHolder => shieldHolder;
 
+    public SetHolder SetHolder => setHolder;
+
+    public Pant Pant => pant;
+
     public ChangeSkinPlayer ChangeSkinPlayer => changeSkinPlayer;
 
     private string animName = Constants.ANIM_IDLE;
@@ -64,7 +70,7 @@ public class CharacterCtl : GameUnit
         IsAttack = false;
         ECurrentHair = EHair.None;
         ECurrentShield = EShield.None;
-        CurrentSkinCharacter = SkinCharacter.None;
+        ECurrentSet = ESet.None;
 
     }
 

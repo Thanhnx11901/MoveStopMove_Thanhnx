@@ -9,4 +9,6 @@ public class GameData : Singleton<GameData>
     public PantConfig pantConfig;
     public ShieldConfig shieldConfig;
     public WeaponConfig weaponConfig;
+
+    public SetConfig setConfig;
 }

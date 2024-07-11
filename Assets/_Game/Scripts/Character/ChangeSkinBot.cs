@@ -1,41 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public enum Skin{
-    None = 0,
-    Hair = 1,
-    Shiel = 2,
-    Set = 3,
-    Pant = 4,
-}
-public class ChangeSkinPlayer : MonoBehaviour
+
+public class ChangeSkinBot : MonoBehaviour
 {
     [SerializeField] private CharacterCtl owner;
     [SerializeField] private HairHolder hairHolder;
     [SerializeField] private ShieldHolder shieldHolder;
     [SerializeField] private Pant pant;
     [SerializeField] private SetHolder setHolder;
+    [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
 
-    private void Start() {
-        LoadSkin();
-    }
-    public void LoadSkin(){
+
+
+    public void LoadSkinRandom(){
         ChangeSkinDefault();
         DelTestSkin();
-        Skin CurrentSkin =  (Skin)PlayerPrefs.GetInt(Constants.CURRENT_SKIN);
-
+        skinnedMeshRenderer.material.color =  UnityEngine.Random.ColorHSV();
+        Skin CurrentSkin =  GetRandomEnumValue<Skin>();
+        Debug.Log(CurrentSkin);
         if(CurrentSkin == Skin.Hair){
-            hairHolder.ChangeHair((EHair)PlayerPrefs.GetInt(Constants.CURRENT_HAIR));
+            hairHolder.ChangeHair(GetRandomEnumValue<EHair>());
         }
         if(CurrentSkin == Skin.Shiel){
-            shieldHolder.ChangeShield((EShield)PlayerPrefs.GetInt(Constants.CURRENT_SHIELD));
+            shieldHolder.ChangeShield(GetRandomEnumValue<EShield>());
         }
         if(CurrentSkin == Skin.Set){
-            setHolder.ChangeSet((ESet)PlayerPrefs.GetInt(Constants.CURRENT_SET));
+            setHolder.ChangeSet(GetRandomEnumValue<ESet>());
         }
         if(CurrentSkin == Skin.Pant){
-            pant.ChangePant((EPant)PlayerPrefs.GetInt(Constants.CURRENT_PANT));
+            pant.ChangePant(GetRandomEnumValue<EPant>());
         }
     }
 
@@ -53,4 +49,10 @@ public class ChangeSkinPlayer : MonoBehaviour
         if(owner.Pant != null) pant.ChangePant(EPant.None);
         if(owner.SetHolder != null) { owner.SetHolder.DeActiveSet();}
     }   
+    public T GetRandomEnumValue<T>() where T : Enum
+    {
+        T[] values = (T[])Enum.GetValues(typeof(T));
+        int randomIndex = UnityEngine.Random.Range(0, values.Length);
+        return values[randomIndex];
+    }
 }

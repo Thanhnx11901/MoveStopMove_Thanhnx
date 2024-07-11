@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b9752e6d015546ccb365cc524de1bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  owner: {fileID: 0}
+  owner: {fileID: 502045476877863020}
   sets:
   - {fileID: 8018836986998782089}
   - {fileID: 8851036702887032930}
@@ -1851,7 +1851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameObjects: []
-  material: {fileID: 2100000, guid: 96fb69ad21cef48268a820c8fad2a45c, type: 2}
+  material: {fileID: 2100000, guid: f81426927bc8f4fe4be16a623906acfd, type: 2}
 --- !u!1 &4650149750623618967
 GameObject:
   m_ObjectHideFlags: 0
@@ -3182,7 +3182,7 @@ Transform:
   m_GameObject: {fileID: 8879069383629370083}
   serializedVersion: 2
   m_LocalRotation: {x: 0.00000008149074, y: -0.0000000011834795, z: -1.4233609e-10, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -6.26, y: 1.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3418,6 +3418,7 @@ MonoBehaviour:
   weaponHolder: {fileID: 7806507328896842429}
   hairHolder: {fileID: 8143946062708785567}
   shieldHolder: {fileID: 1435025011732924822}
+  setHolder: {fileID: 8038863105873358575}
   targetObj: {fileID: 0}
   pant: {fileID: 6259592829911114510}
   listEnemys: []

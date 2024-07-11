@@ -10,6 +10,8 @@ public class BtnHair : MonoBehaviour
     public GameObject imgLock;
     public GameObject imgEquipped;
 
+    public GameObject imgSelect;
+
     private EHair eHair;
     public void OnInit(Hair hair, EHair eHair, int idSkin, int id, SkinShop skinShop)
     {
@@ -47,6 +49,12 @@ public class BtnHair : MonoBehaviour
         else if (PlayerPrefs.GetInt(eHair.ToString()) == 0)
         {
             imgLock.SetActive(true);
+        }
+        if(skinShop.idSkin == idSkin && skinShop.id == id){
+            imgSelect.SetActive(true);
+        }
+        else{
+            imgSelect.SetActive(false);
         }
     }
 }
