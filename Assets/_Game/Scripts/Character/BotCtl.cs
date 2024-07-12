@@ -113,6 +113,10 @@ public class BotCtl : CharacterCtl
         base.Die();
         LevelManager.Ins.currentLevel.removeBotWhenDead(this);
     }
+    protected override void Death()
+    {
+        SimplePool.Despawn(this);
+    }
 
     public T GetRandomEnumValue<T>() where T : Enum
     {

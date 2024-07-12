@@ -24,21 +24,28 @@ public class PlayerCtl : CharacterCtl
     public override void OnInit()
     {
         base.OnInit();
+        rb.velocity = Vector3.zero;
+        gameObject.SetActive(true);
+        TF.position = Vector3.zero;
+        TF.rotation = Quaternion.Euler(Vector3.up*180);
         //sinh vũ khí 
         EWeapon eWeapon = (EWeapon)PlayerPrefs.GetInt(Constants.CURRENT_WEAPON);
         WeaponHolder.ChangeWeapon(eWeapon);
-
+        ChangeSkinPlayer.LoadSkin();
     }
 
     protected override void Update()
     {
         base.Update();
+        if(GameManager.IsState(GameState.ShopSkin)) ChangeAnim(Constants.ANIM_DANCE);
+        if(GameManager.IsState(GameState.MainMenu)) ChangeAnim(Constants.ANIM_IDLE);
         Move();
     }
     private void Move()
     {
-        
-        if (!GameManager.IsState(GameState.GamePlay)) return;
+        if (!GameManager.IsState(GameState.GamePlay)){
+            return;
+            }
         if(IsDead) {
             rb.velocity = Vector3.zero;
             return;
@@ -122,6 +129,14 @@ public class PlayerCtl : CharacterCtl
         CurrentWeapon.ActiveMeshRenderer(false);
         CurrentWeapon.Fire(enemyTarget);        
         IsMoving = true;
+    }
+
+    protected override void Death()
+    {
+        gameObject.SetActive(false);
+        GameManager.ChangeState(GameState.GameOver);
+        UIManager.Ins.CloseAll();
+        UIManager.Ins.OpenUI<Lose>();
     }
 
     protected override void FindEnemyTarget()

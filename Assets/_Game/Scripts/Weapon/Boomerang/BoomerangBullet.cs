@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BoomerangBullet :  Bullet
+public class BoomerangBullet : Bullet
 {
     public float rotationSpeed = 1000f;
-    [SerializeField]private float flightDistance;
+    [SerializeField] private float flightDistance;
 
     public float FlightDistance { get => flightDistance; set => flightDistance = value; }
 
@@ -17,31 +17,34 @@ public class BoomerangBullet :  Bullet
         this.owner = owner;
     }
 
-    IEnumerator CoDespawn(float timeDespawn){
+    IEnumerator CoDespawn(float timeDespawn)
+    {
         yield return new WaitForSeconds(timeDespawn);
         OnDespawn();
     }
 
     private void FixedUpdate()
     {
-        
+
         // Quay cây búa quanh trục y
         rb.MoveRotation(rb.rotation * Quaternion.Euler(Vector3.up * rotationSpeed * Time.fixedDeltaTime));
-        if(owner.IsDead) OnDespawn();
-        if(Vector3.Distance(owner.TF.position, transform.position) > FlightDistance){
+        if (owner.IsDead) OnDespawn();
+        if (Vector3.Distance(owner.TF.position, transform.position) > FlightDistance)
+        {
             Vector3 bulletDirection = owner.GetPointShoot() - transform.position;
             rb.velocity = bulletDirection.normalized * speed;
         }
-        
+
     }
 
     protected override void OnTriggerEnter(Collider other)
     {
         CharacterCtl characterCtl = Cache<CharacterCtl>.GetCollider(other);
-        if (characterCtl != null && characterCtl != owner) 
+        if (characterCtl != null && characterCtl != owner)
         {
-             Vector3 bulletDirection = owner.GetPointShoot() - transform.position;
-             rb.velocity = bulletDirection.normalized * speed;
+            Vector3 bulletDirection = owner.GetPointShoot() - transform.position;
+            rb.velocity = bulletDirection.normalized * speed;
+            owner.AddAttackRange(0.01f);
             OnDespawn();
             characterCtl.Die();
 

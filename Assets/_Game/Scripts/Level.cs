@@ -7,21 +7,21 @@ public class Level : MonoBehaviour
     public List<Transform> listPointSpawnBots;
 
     public List<BotCtl> bots;
-    public float totalBot;
-    public float countBot;
+    public int totalBot;
+    public int countBot;
 
     private float timer;
     private float countTime;
-
-    private void Start()
-    {
+    private int countBotDie;
+    public void OnInit(int totalBot){
+        if(bots.Count > 0) DespawnAllBots();
         timer = 5f;
         countTime = 0f;
-        totalBot = 100;
+        this.totalBot = totalBot*50;
         countBot = 0;
+        countBotDie = 0;
         SpawnBotInit();
     }
-
     public void SpawnBotInit()
     {
         for (int i = 0; i < listPointSpawnBots.Count; i++)
@@ -30,7 +30,6 @@ public class Level : MonoBehaviour
             bots.Add(bot);
             Vector2 randomPoint2D = Random.insideUnitCircle * 5;
             Vector3 randomPosition = new Vector3(randomPoint2D.x, 0, randomPoint2D.y) + listPointSpawnBots[i].position;
-
             bot.TF.position = randomPosition;
             countBot++;
         }
@@ -57,6 +56,11 @@ public class Level : MonoBehaviour
             }
             countTime += Time.deltaTime;
         }
+        if(countBotDie > totalBot){
+            UIManager.Ins.CloseAll();
+            UIManager.Ins.OpenUI<Win>();
+            GameManager.ChangeState(GameState.Victory);   
+        }
     }
     public void removeBotWhenDead(BotCtl botCtl)
     {
@@ -64,5 +68,20 @@ public class Level : MonoBehaviour
         {
             bots.Remove(botCtl);
         }
+        countBotDie++;
+    }
+    public void DespawnAllBots()
+    {
+        while (bots.Count > 0)
+        {
+            BotCtl bot = bots[0];
+            bots.RemoveAt(0);
+            SimplePool.Despawn(bot);
+        }
+        countBot = 0;
+    }
+
+    public int TotalBotAlive(){
+        return totalBot - countBotDie;
     }
 }

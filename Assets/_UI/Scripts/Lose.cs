@@ -5,11 +5,25 @@ using UnityEngine.UI;
 
 public class Lose : UICanvas
 {
-    public Text score;
+    public Text textAlice;
+    private void Start() {
+        Debug.Log("in text");
+        textAlice.text = "#"+LevelManager.Ins.currentLevel.TotalBotAlive();
+    }
 
     public void MainMenuButton()
     {
+        LevelManager.Ins.RetryLevel();
         UIManager.Ins.OpenUI<MianMenu>();
         Close(0);
+        GameManager.ChangeState(GameState.MainMenu);
+    }
+    public void RetryButton()
+    {
+        LevelManager.Ins.RetryLevel();
+        UIManager.Ins.OpenUI<GamePlay>();
+        Close(0);
+        GameManager.ChangeState(GameState.GamePlay);
+
     }
 }

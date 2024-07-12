@@ -20,7 +20,6 @@ public class ChangeSkinBot : MonoBehaviour
         DelTestSkin();
         skinnedMeshRenderer.material.color =  UnityEngine.Random.ColorHSV();
         Skin CurrentSkin =  GetRandomEnumValue<Skin>();
-        Debug.Log(CurrentSkin);
         if(CurrentSkin == Skin.Hair){
             hairHolder.ChangeHair(GetRandomEnumValue<EHair>());
         }

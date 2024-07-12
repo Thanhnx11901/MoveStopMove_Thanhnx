@@ -17,25 +17,25 @@ public class ChangeSkinPlayer : MonoBehaviour
     [SerializeField] private Pant pant;
     [SerializeField] private SetHolder setHolder;
 
-    private void Start() {
-        LoadSkin();
-    }
     public void LoadSkin(){
         ChangeSkinDefault();
         DelTestSkin();
         Skin CurrentSkin =  (Skin)PlayerPrefs.GetInt(Constants.CURRENT_SKIN);
-
-        if(CurrentSkin == Skin.Hair){
+        if(CurrentSkin == Skin.Hair && PlayerPrefs.GetInt(Constants.CURRENT_HAIR) != 0){
             hairHolder.ChangeHair((EHair)PlayerPrefs.GetInt(Constants.CURRENT_HAIR));
+            owner.AddAttackRange(0.05f);
         }
-        if(CurrentSkin == Skin.Shiel){
+        if(CurrentSkin == Skin.Shiel && PlayerPrefs.GetInt(Constants.CURRENT_SHIELD) != 0){
             shieldHolder.ChangeShield((EShield)PlayerPrefs.GetInt(Constants.CURRENT_SHIELD));
+            owner.AddAttackSpeed(0.05f);
         }
-        if(CurrentSkin == Skin.Set){
+        if(CurrentSkin == Skin.Set && PlayerPrefs.GetInt(Constants.CURRENT_SET) != 0){
             setHolder.ChangeSet((ESet)PlayerPrefs.GetInt(Constants.CURRENT_SET));
+            owner.AddAttackRange(0.08f);
         }
-        if(CurrentSkin == Skin.Pant){
+        if(CurrentSkin == Skin.Pant && PlayerPrefs.GetInt(Constants.CURRENT_PANT) != 0){
             pant.ChangePant((EPant)PlayerPrefs.GetInt(Constants.CURRENT_PANT));
+            owner.AddMoveSpeed(0.08f);
         }
     }
 

@@ -14,7 +14,8 @@ public class Bullet : GameUnit
         this.owner = oner;
     }
     // hủy đạn khi sinh ra trong 1 khoảng thời gian 
-    IEnumerator CoDespawn(float timeDespawn){
+    IEnumerator CoDespawn(float timeDespawn)
+    {
         yield return new WaitForSeconds(timeDespawn);
         OnDespawn();
     }
@@ -23,16 +24,22 @@ public class Bullet : GameUnit
     {
         SimplePool.Despawn(this);
         owner.ResetAttack();
-        owner.CurrentWeapon.ActiveMeshRenderer(true);   
+        owner.CurrentWeapon.ActiveMeshRenderer(true);
     }
     protected virtual void OnTriggerEnter(Collider other)
     {
         CharacterCtl characterCtl = Cache<CharacterCtl>.GetCollider(other);
-        if (characterCtl != null && characterCtl != owner) 
+        if (characterCtl != null && characterCtl != owner)
         {
             owner.AddAttackRange(0.01f);
             OnDespawn();
             characterCtl.Die();
         }
+        Decor decor = Cache<Decor>.GetCollider(other);
+        if (decor != null)
+        {
+            OnDespawn();
+        }
+
     }
 }

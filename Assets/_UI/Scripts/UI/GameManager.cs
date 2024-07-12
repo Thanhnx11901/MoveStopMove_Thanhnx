@@ -8,6 +8,9 @@ public enum GameState{
     MainMenu = 0,
     GamePlay = 1,
     ShopSkin = 2,
+    GameOver = 3,
+    GamePause = 4,
+    Victory = 5,
 }
 
 public class GameManager : Singleton<GameManager>

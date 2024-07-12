@@ -23,6 +23,9 @@ public class Constants
 
     public const string CURRENT_SET = "CurrentSet";
 
+        public const string CURRENT_LEVEL = "CurrentLevel";
+
+
     public const string HAMMER = "Hammer";
 
     public const string CANDY = "Candy";

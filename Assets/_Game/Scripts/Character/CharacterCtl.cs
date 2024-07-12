@@ -7,12 +7,10 @@ public class CharacterCtl : GameUnit
 {
     [SerializeField] private Animator anim;
     [SerializeField] protected CapsuleCollider capsuleCollider;
-
     [SerializeField] protected ChangeSkinPlayer changeSkinPlayer;
     [SerializeField] private WeaponHolder weaponHolder;
     [SerializeField] private HairHolder hairHolder;
     [SerializeField] private ShieldHolder shieldHolder;
-
     [SerializeField] private SetHolder setHolder;
     [SerializeField] protected GameObject targetObj;
     [SerializeField] private Pant pant;
@@ -67,11 +65,9 @@ public class CharacterCtl : GameUnit
 
     protected virtual void Awake()
     {
-        IsAttack = false;
         ECurrentHair = EHair.None;
         ECurrentShield = EShield.None;
         ECurrentSet = ESet.None;
-
     }
 
     protected virtual void Start()
@@ -86,7 +82,10 @@ public class CharacterCtl : GameUnit
 
     public virtual void OnInit()
     {
+        if(listEnemys.Count > 0 ) RemoveEnemyTarger();
+        IsAttack = false;
         IsDead = false;
+        capsuleCollider.enabled = true;
         SetScale(1f);
         // set thông số ban đầu
         SetInitialAttackRange();
@@ -154,7 +153,6 @@ public class CharacterCtl : GameUnit
             anim.SetTrigger(this.animName);
         }
     }
-
     // thêm enemy vào list 
     public void AddListEnemy(CharacterCtl enemy)
     {
@@ -224,16 +222,18 @@ public class CharacterCtl : GameUnit
         StartCoroutine(CoDead(2f));
     }
     // thực hiện xóa khỏi list, anim dead và đợi 1 khoảng thời gian thì xóa tự xóa đi 
-    public IEnumerator CoDead(float time)
+    private IEnumerator CoDead(float time)
     {
         OnDeathAction?.Invoke();
         IsDead = true;
         capsuleCollider.enabled = false;
         ChangeAnim(Constants.ANIM_DEAD);
         yield return new WaitForSeconds(time);
-        Destroy(gameObject);
+        Death();
     }
-    // lấy v
+    protected virtual void Death()
+    {
+    }
     public Vector3 GetPointShoot()
     {
         return pointShoot.transform.position;
@@ -242,12 +242,19 @@ public class CharacterCtl : GameUnit
     {
         return pointTarget.transform.position;
     }
-
     public bool HaveCharacterInAttackRange() => listEnemys.Count > 0;
 
     public void setActiveTarget(bool isActive)
     {
         if (targetObj == null) return;
         targetObj.gameObject.SetActive(isActive);
+    }
+
+    public void RemoveEnemyTarger()
+    {
+        while (listEnemys.Count > 0)
+        {
+            listEnemys.RemoveAt(0);
+        }
     }
 }
