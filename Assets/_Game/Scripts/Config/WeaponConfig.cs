@@ -7,6 +7,8 @@ public enum EWeapon
     Hammer = 0,
     Candy = 1,
     Boomerang = 2,
+    Axe= 3,
+    Knife = 4,
 }
 
 [CreateAssetMenu(fileName = "WeaponConfig", menuName = "ScriptableObjects/WeaponConfig", order = 1)]

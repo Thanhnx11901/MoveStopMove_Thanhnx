@@ -149,6 +149,7 @@ public enum PoolType
     Candy,
     Boomerang,
     Bot,
+    Knife,
 }
 
 

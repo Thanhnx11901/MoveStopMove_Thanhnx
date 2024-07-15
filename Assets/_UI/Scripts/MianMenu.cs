@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class MianMenu : UICanvas
 {
     public Text txtCurrentLevel;
+
+    public Text txtCoin;
     private void OnEnable() {
         txtCurrentLevel.text = "Level: "+ (PlayerPrefs.GetInt(Constants.CURRENT_LEVEL)+1);
     }

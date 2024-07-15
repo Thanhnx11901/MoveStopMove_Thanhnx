@@ -30,6 +30,8 @@ public class PlayerCtl : CharacterCtl
         TF.rotation = Quaternion.Euler(Vector3.up*180);
         //sinh vũ khí 
         EWeapon eWeapon = (EWeapon)PlayerPrefs.GetInt(Constants.CURRENT_WEAPON);
+        // set vũ khí mặc định 
+        PlayerPrefs.SetInt(GameData.Ins.weaponConfig.GetWeapon(EWeapon.Hammer).NameWeapon.ToString(), 1);
         WeaponHolder.ChangeWeapon(eWeapon);
         ChangeSkinPlayer.LoadSkin();
     }
