@@ -172,7 +172,8 @@ MonoBehaviour:
   - {fileID: 7071887521912179761}
   bots: []
   totalBot: 50
-  countBot: 15
+  countBot: 0
+  bonusCoin: 1000
 --- !u!1 &1895061605693586429
 GameObject:
   m_ObjectHideFlags: 0

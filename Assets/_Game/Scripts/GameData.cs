@@ -11,4 +11,8 @@ public class GameData : Singleton<GameData>
     public WeaponConfig weaponConfig;
 
     public SetConfig setConfig;
+
+    public ItemDataConfig itemDataConfig;
+
+    public CameraConfig cameraConfig;
 }

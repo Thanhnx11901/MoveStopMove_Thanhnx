@@ -21,7 +21,7 @@ using UnityEngine.Events;
 
 public class UIManager : Singleton<UIManager>
 {
-    [SerializeField] private VariableJoystick Joystick;
+    public GameObject gobj;
     //dict for quick query UI prefab
     //dict dung de lu thong tin prefab canvas truy cap cho nhanh
     private Dictionary<System.Type, UICanvas> uiCanvasPrefab = new Dictionary<System.Type, UICanvas>();
@@ -42,6 +42,11 @@ public class UIManager : Singleton<UIManager>
 
     //open UI
     //mo UI canvas
+
+    private void Update() {
+        if(GameManager.IsState(GameState.GamePlay)) gobj.SetActive(true);
+        else gobj.SetActive(false);
+    }
     public T OpenUI<T>() where T : UICanvas
     {
         UICanvas canvas = GetUI<T>();
@@ -51,15 +56,6 @@ public class UIManager : Singleton<UIManager>
 
         return canvas as T;
     }
-    private void Update() {
-        if(GameManager.IsState(GameState.GamePlay)){
-            Joystick.gameObject.SetActive(true);
-        }else{
-             
-            Joystick.gameObject.SetActive(false);
-        }
-    }
-
     //close UI directly
     //dong UI canvas ngay lap tuc
     public void CloseUI<T>() where T : UICanvas

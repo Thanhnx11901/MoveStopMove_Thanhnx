@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d21abb048faf4bdca98bb3ee337cc35, type: 3}
   m_Name: SetConfig
   m_EditorClassIdentifier: 
-  spriteSets:
-  - {fileID: 0}
-  - {fileID: 21300000, guid: 916eb971e2dc28b419a242fa6950df78, type: 3}
-  - {fileID: 21300000, guid: 7965f490c2ec6044d854d957fe85186e, type: 3}
-  - {fileID: 21300000, guid: 0363a7557b133774f99bf84dcf6fcbed, type: 3}
+  sets:
+  - {fileID: 9107892125416010055, guid: 5ab7812ba5e2a47c6a89e96ebca08abd, type: 3}
+  - {fileID: 7623984824820362281, guid: 4c28cfa60d8a14846b1190d3d2457f54, type: 3}
+  - {fileID: 1746126820877686852, guid: 6339df86a62bb48f7a48dbfaf8937df5, type: 3}
+  - {fileID: 9209325866063122070, guid: 5474fa749406b4548a4eb21c68533d10, type: 3}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BtnPant : MonoBehaviour
 {
@@ -13,11 +14,15 @@ public class BtnPant : MonoBehaviour
     private EPant ePant;
     public GameObject imgSelect;
 
+    public Image image;
+
 
     [SerializeField] private MeshRenderer meshRenderer;
     public void OnInit(EPant ePant, int idSkin, int id, SkinShop skinShop)
     {
-        meshRenderer.material = GameData.Ins.pantConfig.GetMaterialPant(ePant);
+        ItemData itemData = GameData.Ins.itemDataConfig.GetItemData(ESkin.Pant,id);
+        image.sprite = itemData.icon;
+        //meshRenderer.material = GameData.Ins.pantConfig.GetMaterialPant(ePant);
         this.ePant = ePant;
         this.idSkin = idSkin;
         this.id = id;
@@ -42,11 +47,12 @@ public class BtnPant : MonoBehaviour
         {
             imgEquipped.SetActive(false);
         }
-        if (PlayerPrefs.GetInt(ePant.ToString()) == 1)
+        string data = PlayerPrefs.GetString(Constants.PANT).ToString();
+        if (data.Contains(id.ToString()))
         {
             imgLock.SetActive(false);
         }
-        else if (PlayerPrefs.GetInt(ePant.ToString()) == 0)
+        else
         {
             imgLock.SetActive(true);
         }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BtnShield : MonoBehaviour
 {
@@ -13,11 +14,13 @@ public class BtnShield : MonoBehaviour
     private EShield eShield;
 
     public GameObject imgSelect;
+    [SerializeField] private Image image;
 
     public void OnInit(Shield shield, EShield eShield, int idSkin, int id, SkinShop skinShop)
     {
-        Shield prefabShield = Instantiate(shield, transform);
-        prefabShield.transform.localScale = prefabShield.ScaleShop;
+        ItemData itemData = GameData.Ins.itemDataConfig.GetItemData(ESkin.Shiel,id);
+        image.sprite = itemData.icon;
+
         this.eShield = eShield;
         this.idSkin = idSkin;
         this.id = id;
@@ -42,11 +45,12 @@ public class BtnShield : MonoBehaviour
         {
             imgEquipped.SetActive(false);
         }
-        if (PlayerPrefs.GetInt(eShield.ToString()) == 1)
+        string data = PlayerPrefs.GetString(Constants.SHIELD).ToString();
+        if (data.Contains(id.ToString()))
         {
             imgLock.SetActive(false);
         }
-        else if (PlayerPrefs.GetInt(eShield.ToString()) == 0)
+        else
         {
             imgLock.SetActive(true);
         }

@@ -6,11 +6,12 @@ using UnityEngine.Animations;
 
 public class PlayerCtl : CharacterCtl
 {
-    [SerializeField] private VariableJoystick variableJoystick;
     [SerializeField] private Rigidbody rb;
-
+    [SerializeField] private GameObject gobjRange;
     private float horizontal;
     private float vertical;
+
+    public VariableJoystick VariableJoystick { get; set; }
 
     protected override void Awake()
     {
@@ -19,6 +20,14 @@ public class PlayerCtl : CharacterCtl
     }
     protected override void Start()
     {
+        if (PlayerPrefs.GetInt("FirstTime", 0) == 0)
+        {
+            PlayerPrefs.SetString(Constants.WEAPON, "0");
+            PlayerPrefs.SetInt(Constants.CURRENT_WEAPON,0);
+            PlayerPrefs.SetInt(Constants.CURRENT_COIN, 500);
+            PlayerPrefs.SetInt("FirstTime", 1);
+            PlayerPrefs.Save();
+        }
         base.Start();
     }
     public override void OnInit()
@@ -31,31 +40,39 @@ public class PlayerCtl : CharacterCtl
         //sinh vũ khí 
         EWeapon eWeapon = (EWeapon)PlayerPrefs.GetInt(Constants.CURRENT_WEAPON);
         // set vũ khí mặc định 
-        PlayerPrefs.SetInt(GameData.Ins.weaponConfig.GetWeapon(EWeapon.Hammer).NameWeapon.ToString(), 1);
         WeaponHolder.ChangeWeapon(eWeapon);
         ChangeSkinPlayer.LoadSkin();
     }
 
     protected override void Update()
     {
+        Debug.Log(PlayerPrefs.GetInt(Constants.CURRENT_WEAPON));
         base.Update();
         if(GameManager.IsState(GameState.ShopSkin)) ChangeAnim(Constants.ANIM_DANCE);
         if(GameManager.IsState(GameState.MainMenu)) ChangeAnim(Constants.ANIM_IDLE);
+        if(GameManager.IsState(GameState.Victory)) {
+            ChangeAnim(Constants.ANIM_WIN);
+            rb.velocity = Vector3.zero;
+            TF.rotation = Quaternion.Euler(Vector3.up*180);
+        }
+        if(GameManager.IsState(GameState.GamePlay)) gobjRange.SetActive(true);
+        else gobjRange.SetActive(false);
         Move();
     }
     private void Move()
     {
+        if(VariableJoystick == null) return;
         if (!GameManager.IsState(GameState.GamePlay)){
             return;
-            }
+        }
         if(IsDead) {
             rb.velocity = Vector3.zero;
             return;
         }
         if (IsMoving)
         {
-            horizontal = variableJoystick.Horizontal;
-            vertical = variableJoystick.Vertical;
+            horizontal = VariableJoystick.Horizontal;
+            vertical = VariableJoystick.Vertical;
         }
         if(Math.Abs(horizontal) < 0.00001f && Math.Abs(vertical) < 0.00001f){
             rb.velocity = Vector3.zero;

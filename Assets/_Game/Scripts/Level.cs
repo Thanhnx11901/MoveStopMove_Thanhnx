@@ -9,15 +9,15 @@ public class Level : MonoBehaviour
     public List<BotCtl> bots;
     public int totalBot;
     public int countBot;
-
     private float timer;
     private float countTime;
     private int countBotDie;
-    public void OnInit(int totalBot){
+
+    public int bonusCoin;
+    public void OnInit(){
         if(bots.Count > 0) DespawnAllBots();
         timer = 5f;
         countTime = 0f;
-        this.totalBot = totalBot*50;
         countBot = 0;
         countBotDie = 0;
         SpawnBotInit();
@@ -56,7 +56,7 @@ public class Level : MonoBehaviour
             }
             countTime += Time.deltaTime;
         }
-        if(countBotDie > totalBot){
+        if(countBotDie >= totalBot){
             UIManager.Ins.CloseAll();
             UIManager.Ins.OpenUI<Win>();
             GameManager.ChangeState(GameState.Victory);   

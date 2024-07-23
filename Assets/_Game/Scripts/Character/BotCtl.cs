@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class BotCtl : CharacterCtl
 {
+    [SerializeField] private Target target;
     [SerializeField] private NavMeshAgent agent;
     private IState<BotCtl> currentState;
     private IdleState idleState = new IdleState();
@@ -18,7 +19,6 @@ public class BotCtl : CharacterCtl
     public PatrolState PatrolState { get => patrolState; set => patrolState = value; }
     public AttackState AttackState { get => attackState; set => attackState = value; }
     public DieState DieState { get => dieState; set => dieState = value; }
-
     [SerializeField] private ChangeSkinBot changeSkinBot;
     protected override void Start()
     {
@@ -29,11 +29,16 @@ public class BotCtl : CharacterCtl
     {
         base.OnInit();
         //sinh vũ khí cho bot
-        WeaponHolder.ChangeWeapon(GetRandomEnumValue<EWeapon>());
+
+        WeaponHolder.ChangeWeaponBot(GetRandomEnumValue<EWeapon>());
+
         changeSkinBot.LoadSkinRandom();
+        target.TargetColor = changeSkinBot.skinnedMeshRenderer.material.color;
     }
     protected override void Update()
     {
+        if(GameManager.IsState(GameState.GamePlay)) agent.enabled = true;
+        else agent.enabled = false;
         if (currentState != null)
         {
             currentState.OnExecute(this);
@@ -58,31 +63,35 @@ public class BotCtl : CharacterCtl
             currentState.OnEnter(this);
         }
     }
+    public override void SetInitialMoveSpeed()
+    {
+        MoveSpeed = GameData.Ins.characterConfig.moveSpeed;
+        agent.speed = MoveSpeed;
+    }
+    public override void AddMoveSpeed(float additionalMoveSpeed)
+    {
+        MoveSpeed += additionalMoveSpeed;
+        agent.speed = MoveSpeed;
+    }
 
     public void Move(Vector3 pos)
     {
         IsMoving = true;
         Agent.SetDestination(pos);
-        
-
     }
 
     public Vector3 GetRandomPositionBot()
     {
-        // Vector2 randomPoint2D = Random.insideUnitCircle * 15;
-        // Vector3 randomPosition = new Vector3(randomPoint2D.x, 0, randomPoint2D.y) + TF.position;
-        // return randomPosition;
-
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * 10f; 
+        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * 10f;
         randomDirection += TF.position;
         NavMeshHit hit;
-        NavMesh.SamplePosition(randomDirection, out hit, 10f, NavMesh.AllAreas); 
+        NavMesh.SamplePosition(randomDirection, out hit, 10f, NavMesh.AllAreas);
         return hit.position;
     }
     public void AttackCharacterInRange()
     {
         FindEnemyTarget();
-        
+
         RotateTowardsTarget();
         prepareAttackCounter += Time.deltaTime;
         if (prepareAttackCounter >= prepareAttackDuration)

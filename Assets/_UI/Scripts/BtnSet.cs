@@ -18,7 +18,8 @@ public class BtnSet : MonoBehaviour
     [SerializeField] private Image image;
     public void OnInit(ESet eSet, int idSkin, int id, SkinShop skinShop)
     {
-        image.sprite = GameData.Ins.setConfig.GetSpriteSet(eSet);
+        ItemData itemData = GameData.Ins.itemDataConfig.GetItemData(ESkin.Set,id);
+        image.sprite = itemData.icon;
         this.eSet = eSet;
         this.idSkin = idSkin;
         this.id = id;
@@ -43,11 +44,12 @@ public class BtnSet : MonoBehaviour
         {
             imgEquipped.SetActive(false);
         }
-        if (PlayerPrefs.GetInt(eSet.ToString()) == 1)
+        string data = PlayerPrefs.GetString(Constants.SET).ToString();
+        if (data.Contains(id.ToString()))
         {
             imgLock.SetActive(false);
         }
-        else if (PlayerPrefs.GetInt(eSet.ToString()) == 0)
+        else
         {
             imgLock.SetActive(true);
         }

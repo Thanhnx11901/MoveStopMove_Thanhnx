@@ -11,20 +11,31 @@ public class LevelManager : Singleton<LevelManager>
 
     private void Start() {
         currentLevel = Instantiate(levels[PlayerPrefs.GetInt(Constants.CURRENT_LEVEL)],transform);
-        currentLevel.OnInit(PlayerPrefs.GetInt(Constants.CURRENT_LEVEL)+1);
+        currentLevel.OnInit();
     }
     public void RetryLevel(){
         playerCtl.OnInit();
-        currentLevel.OnInit(PlayerPrefs.GetInt(Constants.CURRENT_LEVEL)+1);
+        currentLevel.OnInit();
     }
-    public void NextLevel(){
+    public void NextLevel(){        
         playerCtl.OnInit();
+        PlayerPrefs.SetInt(Constants.CURRENT_COIN,  PlayerPrefs.GetInt(Constants.CURRENT_COIN) + currentLevel.bonusCoin); 
         if(currentLevel != null) {
             currentLevel.DespawnAllBots();
             Destroy(currentLevel.gameObject);
         }
         PlayerPrefs.SetInt(Constants.CURRENT_LEVEL, PlayerPrefs.GetInt(Constants.CURRENT_LEVEL) +1);
+
+        if(PlayerPrefs.GetInt(Constants.CURRENT_LEVEL) == levels.Count) {
+            RetryLevel();
+            UIManager.Ins.CloseAll();
+            UIManager.Ins.OpenUI<MianMenu>();
+            GameManager.ChangeState(GameState.MainMenu);
+            return;
+        }
         currentLevel = Instantiate(levels[PlayerPrefs.GetInt(Constants.CURRENT_LEVEL)],transform);
-        currentLevel.OnInit(PlayerPrefs.GetInt(Constants.CURRENT_LEVEL)+1);
+        currentLevel.OnInit();
+
+        
     }
 }

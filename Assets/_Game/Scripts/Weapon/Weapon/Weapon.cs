@@ -10,7 +10,7 @@ public class Weapon : GameUnit
     // tốc độ đánh 
     [SerializeField] private float attackSpeed;
 
-    public GameObject imgShop;
+    public Sprite sprite;
 
     [SerializeField] private EWeapon nameWeapon;
 

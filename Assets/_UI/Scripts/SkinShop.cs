@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine.UI;
 
 public class SkinShop : UICanvas
 {
+    public Text txtCoin;
+    public Text txtMoney;
+
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private GameObject equippedButton;
 
@@ -71,6 +75,7 @@ public class SkinShop : UICanvas
         content_Shield.SetActive(false);
         content_Set.SetActive(false);
         content_Pant.SetActive(false);
+        txtCoin.text = PlayerPrefs.GetInt(Constants.CURRENT_COIN).ToString();
     }
     public void Spawn_Hair()
     {
@@ -78,7 +83,7 @@ public class SkinShop : UICanvas
         {
             if (hairStyle == EHair.None) continue;
             BtnHair btnHair = Instantiate(prefabBtnHair, content_Hair.transform);
-            btnHair.OnInit(GameData.Ins.hairConfig.GetHair(hairStyle), hairStyle, (int)Skin.Hair, (int)hairStyle, this);
+            btnHair.OnInit(GameData.Ins.hairConfig.GetHair(hairStyle), hairStyle, (int)ESkin.Hair, (int)hairStyle, this);
             btnHairs.Add(btnHair);
         }
     }
@@ -96,7 +101,7 @@ public class SkinShop : UICanvas
         {
             if (shieldStyle == EShield.None) continue;
             BtnShield btnShield = Instantiate(prefabBtnShield, content_Shield.transform);
-            btnShield.OnInit(GameData.Ins.shieldConfig.GetShield(shieldStyle), shieldStyle, (int)Skin.Shiel, (int)shieldStyle, this);
+            btnShield.OnInit(GameData.Ins.shieldConfig.GetShield(shieldStyle), shieldStyle, (int)ESkin.Shiel, (int)shieldStyle, this);
             btnShields.Add(btnShield);
         }
     }
@@ -113,7 +118,7 @@ public class SkinShop : UICanvas
         {
             if (pantStyle == EPant.None) continue;
             BtnPant btnPant = Instantiate(prefabBtnPant, content_Pant.transform);
-            btnPant.OnInit(pantStyle, (int)Skin.Pant, (int)pantStyle, this);
+            btnPant.OnInit(pantStyle, (int)ESkin.Pant, (int)pantStyle, this);
             BtnPants.Add(btnPant);
         }
     }
@@ -130,7 +135,7 @@ public class SkinShop : UICanvas
         {
             if (setStyle == ESet.None) continue;
             BtnSet btnSet = Instantiate(prefabBtnSet, content_Set.transform);
-            btnSet.OnInit(setStyle, (int)Skin.Set, (int)setStyle, this);
+            btnSet.OnInit(setStyle, (int)ESkin.Set, (int)setStyle, this);
             BtnSets.Add(btnSet);
         }
     }
@@ -143,33 +148,48 @@ public class SkinShop : UICanvas
     }
     public void LoadButton()
     {
-        Skin skin = (Skin)idSkin;
-        if (skin == Skin.Hair)
+        int coin = PlayerPrefs.GetInt(Constants.CURRENT_COIN);
+        txtCoin.text = coin.ToString();
+
+        int Money = GameData.Ins.itemDataConfig.GetItemData((ESkin)idSkin, id).Price;
+        txtMoney.text = Money.ToString();
+        if (coin < Money)
+        {
+            txtMoney.color = Color.red;
+        }
+        else
+        {
+            txtMoney.color = Color.black;
+        }
+
+
+        ESkin skin = (ESkin)idSkin;
+        if (skin == ESkin.Hair)
         {
             LoadButtonHair();
             ReLoadBtn_Hair();
         }
-        if (skin == Skin.Shiel)
+        if (skin == ESkin.Shiel)
         {
             LoadButtonShiel();
             ReLoadBtn_Shield();
         }
-        if (skin == Skin.Set)
+        if (skin == ESkin.Set)
         {
             LoadButtonSet();
             ReLoadBtn_Set();
         }
-        if (skin == Skin.Pant)
+        if (skin == ESkin.Pant)
         {
             LoadButtonPant();
             ReLoadBtn_Pant();
         }
-
+        txtCoin.text = PlayerPrefs.GetInt(Constants.CURRENT_COIN).ToString();
     }
     public void SelectButton()
     {
-        Skin skin = (Skin)idSkin;
-        if (skin == Skin.Hair)
+        ESkin skin = (ESkin)idSkin;
+        if (skin == ESkin.Hair)
         {
             PlayerPrefs.SetInt(Constants.CURRENT_SKIN, idSkin);
             PlayerPrefs.SetInt(Constants.CURRENT_HAIR, id);
@@ -178,7 +198,7 @@ public class SkinShop : UICanvas
             LoadButton();
 
         }
-        if (skin == Skin.Shiel)
+        if (skin == ESkin.Shiel)
         {
             PlayerPrefs.SetInt(Constants.CURRENT_SKIN, idSkin);
             PlayerPrefs.SetInt(Constants.CURRENT_SHIELD, id);
@@ -187,7 +207,7 @@ public class SkinShop : UICanvas
             LoadButton();
 
         }
-        if (skin == Skin.Set)
+        if (skin == ESkin.Set)
         {
             PlayerPrefs.SetInt(Constants.CURRENT_SKIN, idSkin);
             PlayerPrefs.SetInt(Constants.CURRENT_SET, id);
@@ -195,7 +215,7 @@ public class SkinShop : UICanvas
             LevelManager.Ins.playerCtl.IsActiveSkin(true);
             LoadButton();
         }
-        if (skin == Skin.Pant)
+        if (skin == ESkin.Pant)
         {
             PlayerPrefs.SetInt(Constants.CURRENT_SKIN, idSkin);
             PlayerPrefs.SetInt(Constants.CURRENT_PANT, id);
@@ -213,10 +233,10 @@ public class SkinShop : UICanvas
         PlayerPrefs.SetInt(Constants.CURRENT_SHIELD, 0);
         PlayerPrefs.SetInt(Constants.CURRENT_PANT, 0);
         PlayerPrefs.SetInt(Constants.CURRENT_SET, 0);
-        
+
         Debug.Log(PlayerPrefs.GetInt(Constants.CURRENT_SKIN));
         Debug.Log(PlayerPrefs.GetInt(Constants.CURRENT_HAIR));
-        Debug.Log(PlayerPrefs.GetInt(Constants.CURRENT_SHIELD)); 
+        Debug.Log(PlayerPrefs.GetInt(Constants.CURRENT_SHIELD));
         Debug.Log(PlayerPrefs.GetInt(Constants.CURRENT_PANT));
         Debug.Log(PlayerPrefs.GetInt(Constants.CURRENT_SET));
         LevelManager.Ins.playerCtl.OnInit();
@@ -225,33 +245,38 @@ public class SkinShop : UICanvas
     }
     public void BuyButton()
     {
-        Skin skin = (Skin)idSkin;
-        if (skin == Skin.Hair)
+        // tru tien 
+        int coin = PlayerPrefs.GetInt(Constants.CURRENT_COIN);
+        if (coin < GameData.Ins.itemDataConfig.GetItemData((ESkin)idSkin, id).Price) return;
+        coin = coin - GameData.Ins.itemDataConfig.GetItemData((ESkin)idSkin, id).Price;
+        PlayerPrefs.SetInt(Constants.CURRENT_COIN, coin);
+
+        ESkin skin = (ESkin)idSkin;
+        if (skin == ESkin.Hair)
         {
-            EHair hair = (EHair)id;
-            PlayerPrefs.SetInt(hair.ToString(), 1);
+            string dataHair = PlayerPrefs.GetString(Constants.HAIR) + id;
+            PlayerPrefs.SetString(Constants.HAIR, dataHair);
             LoadButton();
         }
-        if (skin == Skin.Shiel)
+        if (skin == ESkin.Shiel)
         {
-            EShield eShield = (EShield)id;
-            PlayerPrefs.SetInt(eShield.ToString(), 1);
+            string dataShield = PlayerPrefs.GetString(Constants.SHIELD) + id;
+            PlayerPrefs.SetString(Constants.SHIELD, dataShield);
             LoadButton();
         }
-        if (skin == Skin.Set)
+        if (skin == ESkin.Set)
         {
-            ESet eSet = (ESet)id;
-            PlayerPrefs.SetInt(eSet.ToString(), 1);
+            string dataSet = PlayerPrefs.GetString(Constants.SET).ToString() + id;
+            PlayerPrefs.SetString(Constants.SET, dataSet);
             LoadButton();
         }
-        if (skin == Skin.Pant)
+        if (skin == ESkin.Pant)
         {
-            EPant ePant = (EPant)id;
-            PlayerPrefs.SetInt(ePant.ToString(), 1);
+            string dataPant = PlayerPrefs.GetString(Constants.PANT).ToString() + id;
+            PlayerPrefs.SetString(Constants.PANT, dataPant);
             LoadButton();
         }
     }
-
     public void ExitButton()
     {
         GameManager.ChangeState(GameState.MainMenu);
@@ -259,13 +284,12 @@ public class SkinShop : UICanvas
         LevelManager.Ins.playerCtl.OnInit();
         LevelManager.Ins.playerCtl.IsActiveSkin(true);
         Close(0);
-
     }
 
     public void BtnSelectHair()
     {
         scrollRect.content = content_Hair.GetComponent<RectTransform>();
-        idSkin = (int)Skin.Hair;
+        idSkin = (int)ESkin.Hair;
         if (PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == idSkin && PlayerPrefs.GetInt(Constants.CURRENT_HAIR) != 0)
         {
             id = PlayerPrefs.GetInt(Constants.CURRENT_HAIR);
@@ -291,7 +315,7 @@ public class SkinShop : UICanvas
     public void BtnSelectShield()
     {
         scrollRect.content = content_Shield.GetComponent<RectTransform>();
-        idSkin = (int)Skin.Shiel;
+        idSkin = (int)ESkin.Shiel;
         if (PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == idSkin && PlayerPrefs.GetInt(Constants.CURRENT_SHIELD) != 0)
         {
             id = PlayerPrefs.GetInt(Constants.CURRENT_SHIELD);
@@ -316,7 +340,7 @@ public class SkinShop : UICanvas
     public void BtnSelectPant()
     {
         scrollRect.content = content_Pant.GetComponent<RectTransform>();
-        idSkin = (int)Skin.Pant;
+        idSkin = (int)ESkin.Pant;
         if (PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == idSkin && PlayerPrefs.GetInt(Constants.CURRENT_PANT) != 0)
         {
             id = PlayerPrefs.GetInt(Constants.CURRENT_PANT);
@@ -341,7 +365,7 @@ public class SkinShop : UICanvas
     public void BtnSelectSet()
     {
         scrollRect.content = content_Set.GetComponent<RectTransform>();
-        idSkin = (int)Skin.Set;
+        idSkin = (int)ESkin.Set;
         if (PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == idSkin && PlayerPrefs.GetInt(Constants.CURRENT_SET) != 0)
         {
             id = PlayerPrefs.GetInt(Constants.CURRENT_SET);
@@ -366,20 +390,21 @@ public class SkinShop : UICanvas
 
     private void LoadButtonHair()
     {
-        EHair hair = (EHair)id;
-        if (PlayerPrefs.GetInt(hair.ToString()) == 0)
-        {
-            buyButton.SetActive(true);
-            equippedButton.SetActive(false);
-            selectButton.SetActive(false);
-        }
-        else if (PlayerPrefs.GetInt(hair.ToString()) == 1)
+        string dataHair = PlayerPrefs.GetString(Constants.HAIR).ToString();
+
+        if (dataHair.Contains(id.ToString()))
         {
             buyButton.SetActive(false);
             equippedButton.SetActive(false);
             selectButton.SetActive(true);
         }
-        if (PlayerPrefs.GetInt(Constants.CURRENT_HAIR) == id && PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == (int)Skin.Hair)
+        else 
+        {
+            buyButton.SetActive(true);
+            equippedButton.SetActive(false);
+            selectButton.SetActive(false);
+        }
+        if (PlayerPrefs.GetInt(Constants.CURRENT_HAIR) == id && PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == (int)ESkin.Hair)
         {
             buyButton.SetActive(false);
             equippedButton.SetActive(true);
@@ -388,20 +413,20 @@ public class SkinShop : UICanvas
     }
     private void LoadButtonShiel()
     {
-        EShield eShield = (EShield)id;
-        if (PlayerPrefs.GetInt(eShield.ToString()) == 0)
-        {
-            buyButton.SetActive(true);
-            equippedButton.SetActive(false);
-            selectButton.SetActive(false);
-        }
-        else if (PlayerPrefs.GetInt(eShield.ToString()) == 1)
+        string dataShield = PlayerPrefs.GetString(Constants.SHIELD).ToString();
+        if (dataShield.Contains(id.ToString()))
         {
             buyButton.SetActive(false);
             equippedButton.SetActive(false);
             selectButton.SetActive(true);
         }
-        if (PlayerPrefs.GetInt(Constants.CURRENT_SHIELD) == id && PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == (int)Skin.Shiel)
+        else 
+        {
+            buyButton.SetActive(true);
+            equippedButton.SetActive(false);
+            selectButton.SetActive(false);
+        }
+        if (PlayerPrefs.GetInt(Constants.CURRENT_SHIELD) == id && PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == (int)ESkin.Shiel)
         {
             buyButton.SetActive(false);
             equippedButton.SetActive(true);
@@ -410,20 +435,20 @@ public class SkinShop : UICanvas
     }
     private void LoadButtonPant()
     {
-        EPant ePant = (EPant)id;
-        if (PlayerPrefs.GetInt(ePant.ToString()) == 0)
-        {
-            buyButton.SetActive(true);
-            equippedButton.SetActive(false);
-            selectButton.SetActive(false);
-        }
-        else if (PlayerPrefs.GetInt(ePant.ToString()) == 1)
+        string dataPant = PlayerPrefs.GetString(Constants.PANT).ToString();
+        if (dataPant.Contains(id.ToString()))
         {
             buyButton.SetActive(false);
             equippedButton.SetActive(false);
             selectButton.SetActive(true);
         }
-        if (PlayerPrefs.GetInt(Constants.CURRENT_PANT) == id && PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == (int)Skin.Pant)
+        else 
+        {
+            buyButton.SetActive(true);
+            equippedButton.SetActive(false);
+            selectButton.SetActive(false);
+        }
+        if (PlayerPrefs.GetInt(Constants.CURRENT_PANT) == id && PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == (int)ESkin.Pant)
         {
             buyButton.SetActive(false);
             equippedButton.SetActive(true);
@@ -432,20 +457,20 @@ public class SkinShop : UICanvas
     }
     private void LoadButtonSet()
     {
-        ESet eSet = (ESet)id;
-        if (PlayerPrefs.GetInt(eSet.ToString()) == 0)
-        {
-            buyButton.SetActive(true);
-            equippedButton.SetActive(false);
-            selectButton.SetActive(false);
-        }
-        else if (PlayerPrefs.GetInt(eSet.ToString()) == 1)
+        string dataSet = PlayerPrefs.GetString(Constants.SET).ToString();
+        if (dataSet.Contains(id.ToString()))
         {
             buyButton.SetActive(false);
             equippedButton.SetActive(false);
             selectButton.SetActive(true);
         }
-        if (PlayerPrefs.GetInt(Constants.CURRENT_SET) == id && PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == (int)Skin.Set)
+        else 
+        {
+            buyButton.SetActive(true);
+            equippedButton.SetActive(false);
+            selectButton.SetActive(false);
+        }
+        if (PlayerPrefs.GetInt(Constants.CURRENT_SET) == id && PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == (int)ESkin.Set)
         {
             buyButton.SetActive(false);
             equippedButton.SetActive(true);

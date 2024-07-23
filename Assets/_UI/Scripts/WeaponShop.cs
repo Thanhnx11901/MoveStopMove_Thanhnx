@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class WeaponShop : UICanvas
 {
+    public Text txtCoin;
     private PlayerCtl playerCtl;
     [SerializeField] private WeaponConfig weaponConfig;
     [SerializeField] private Text textNameWeapon;
@@ -20,14 +21,24 @@ public class WeaponShop : UICanvas
 
     [SerializeField] private GameObject buyButton;
 
+    [SerializeField] private Image image;
+
     private EWeapon eCurrentWeapon;
 
     private Weapon currentWeapon;
+    private void Start()
+    {
+        if (PlayerPrefs.GetInt("FirstTime1", 0) == 0)
+        {
+            eCurrentWeapon = EWeapon.Hammer;
+            PlayerPrefs.SetInt("FirstTime1", 1);
+        }
+    }
     private void OnEnable()
     {
         playerCtl = LevelManager.Ins.playerCtl;
         playerCtl.gameObject.SetActive(false);
-        eCurrentWeapon = EWeapon.Hammer;
+        txtCoin.text = PlayerPrefs.GetInt(Constants.CURRENT_COIN).ToString();
         UpdateUI();
     }
     public void NextWeapon()
@@ -42,31 +53,51 @@ public class WeaponShop : UICanvas
     }
     private void UpdateUI()
     {
-        if (currentWeapon != null) Destroy(currentWeapon.gameObject);
+        currentWeapon = weaponConfig.GetWeapon(eCurrentWeapon);
 
-        currentWeapon = Instantiate(weaponConfig.GetWeapon(eCurrentWeapon), panelWeapon.transform);
-        textNameWeapon.text = currentWeapon.NameWeapon.ToString();
+
+
+
+        ItemData itemDataWeapon = GameData.Ins.itemDataConfig.GetItemData(ESkin.Weapon, (int)eCurrentWeapon);
+
+        int coin = PlayerPrefs.GetInt(Constants.CURRENT_COIN);
+        txtCoin.text = coin.ToString();
+        if (coin < itemDataWeapon.Price)
+        {
+            textMoney.color = Color.red;
+        }
+        else
+        {
+            textMoney.color = Color.black;
+
+        }
+        image.sprite = itemDataWeapon.icon;
+
+        textNameWeapon.text = itemDataWeapon.Name;
         textAddPower.text = currentWeapon.AddPower;
+        textMoney.text = itemDataWeapon.Price.ToString();
 
-
-        if (PlayerPrefs.GetInt(currentWeapon.NameWeapon.ToString()) == 0)
+        string data = PlayerPrefs.GetString(Constants.WEAPON);
+        int id = (int)eCurrentWeapon;
+        if (data.Contains(id.ToString()))
+        {
+            buyButton.SetActive(false);
+            equippedButton.SetActive(false);
+            selectButton.SetActive(true);
+        }
+        else
         {
             buyButton.SetActive(true);
             equippedButton.SetActive(false);
             selectButton.SetActive(false);
         }
-        else if (playerCtl.ECurrentWeapon == eCurrentWeapon)
+        if (PlayerPrefs.GetInt(Constants.CURRENT_WEAPON) == (int)eCurrentWeapon)
         {
-            equippedButton.SetActive(true);
             buyButton.SetActive(false);
+            equippedButton.SetActive(true);
             selectButton.SetActive(false);
         }
-        else
-        {
-            equippedButton.SetActive(false);
-            buyButton.SetActive(false);
-            selectButton.SetActive(true);
-        }
+
     }
 
     public void SelectButton()
@@ -81,7 +112,14 @@ public class WeaponShop : UICanvas
     }
     public void BuyButton()
     {
-        PlayerPrefs.SetInt(currentWeapon.NameWeapon.ToString(), 1);
+        int coin = PlayerPrefs.GetInt(Constants.CURRENT_COIN);
+        if (coin < GameData.Ins.itemDataConfig.GetItemData(ESkin.Weapon, (int)eCurrentWeapon).Price) return;
+        coin = coin - GameData.Ins.itemDataConfig.GetItemData(ESkin.Weapon, (int)eCurrentWeapon).Price;
+        PlayerPrefs.SetInt(Constants.CURRENT_COIN, coin);
+
+        string data = PlayerPrefs.GetString(Constants.WEAPON).ToString() + (int)eCurrentWeapon;
+        PlayerPrefs.SetString(Constants.WEAPON, data);
+        Debug.Log(PlayerPrefs.GetString(Constants.WEAPON));
         UpdateUI();
     }
 

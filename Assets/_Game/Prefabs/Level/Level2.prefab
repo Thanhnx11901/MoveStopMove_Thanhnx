@@ -285,7 +285,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 0dd7eb65cfc304afeb12bbe46e8a160e, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 751117bf8b4ab4105999f49ab3843a56, type: 2}
   m_BuildHeightMesh: 0
 --- !u!114 &6687002126066799415
 MonoBehaviour:
@@ -316,8 +316,9 @@ MonoBehaviour:
   - {fileID: 1945419199364906978}
   - {fileID: 8133451247143000564}
   bots: []
-  totalBot: 0
+  totalBot: 100
   countBot: 0
+  bonusCoin: 2000
 --- !u!1 &1447622659823417370
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,4 +27,18 @@ public class WeaponHolder : MonoBehaviour
         owner.AddAttackRange(weapon.Range);
         owner.AddAttackSpeed(weapon.AttackSpeed);
     }
+    public void ChangeWeaponBot(EWeapon eWeapon){
+        if(owner.CurrentWeapon != null) DelWeapon();
+        //sinh vũ khí
+        Weapon weapon = Instantiate(GameData.Ins.weaponConfig.GetWeapon(eWeapon), transform);
+        weapon.Owner = owner;
+        owner.CurrentWeapon = weapon;
+        owner.ECurrentWeapon = eWeapon;
+        weapon.TF.localPosition = weapon.Position;
+        weapon.TF.localRotation = Quaternion.Euler(weapon.Rotation);
+
+        // thêm tầm đánh hoặc tốc độ đánh 
+        owner.AddAttackRange(weapon.Range);
+        owner.AddAttackSpeed(weapon.AttackSpeed);
+    }
 }

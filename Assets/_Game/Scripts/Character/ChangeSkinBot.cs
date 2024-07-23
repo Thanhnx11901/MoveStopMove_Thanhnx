@@ -11,43 +11,56 @@ public class ChangeSkinBot : MonoBehaviour
     [SerializeField] private ShieldHolder shieldHolder;
     [SerializeField] private Pant pant;
     [SerializeField] private SetHolder setHolder;
-    [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
+    [SerializeField] public SkinnedMeshRenderer skinnedMeshRenderer;
 
 
 
-    public void LoadSkinRandom(){
+    public void LoadSkinRandom()
+    {
         ChangeSkinDefault();
         DelTestSkin();
-        skinnedMeshRenderer.material.color =  UnityEngine.Random.ColorHSV();
-        Skin CurrentSkin =  GetRandomEnumValue<Skin>();
-        if(CurrentSkin == Skin.Hair){
+        skinnedMeshRenderer.material.color = UnityEngine.Random.ColorHSV();
+        ESkin CurrentSkin = GetRandomEnumValue<ESkin>();
+        if (CurrentSkin == ESkin.Hair)
+        {
             hairHolder.ChangeHair(GetRandomEnumValue<EHair>());
+            owner.AddAttackRange(0.05f);
         }
-        if(CurrentSkin == Skin.Shiel){
+        if (CurrentSkin == ESkin.Shiel)
+        {
             shieldHolder.ChangeShield(GetRandomEnumValue<EShield>());
+            owner.AddAttackSpeed(0.05f);
         }
-        if(CurrentSkin == Skin.Set){
+        if (CurrentSkin == ESkin.Set)
+        {
             setHolder.ChangeSet(GetRandomEnumValue<ESet>());
+            owner.AddAttackRange(0.08f);
+
         }
-        if(CurrentSkin == Skin.Pant){
+        if (CurrentSkin == ESkin.Pant)
+        {
             pant.ChangePant(GetRandomEnumValue<EPant>());
+            owner.AddMoveSpeed(0.08f);
+
         }
     }
 
-    public void ChangeSkinDefault(){
-        if(owner.CurrentHair != null) hairHolder.DelHair();
-        if(owner.CurrentShield != null) shieldHolder.DelShield();
-        if(owner.Pant != null) pant.ChangePant(EPant.None);
-        if(owner.SetHolder != null) { owner.SetHolder.DeActiveSet();}
+    public void ChangeSkinDefault()
+    {
+        if (owner.CurrentHair != null) hairHolder.DelHair();
+        if (owner.CurrentShield != null) shieldHolder.DelShield();
+        if (owner.Pant != null) pant.ChangePant(EPant.None);
+        if (owner.SetHolder != null) { owner.SetHolder.ChangeSet(ESet.None); }
 
     }
 
-    public void DelTestSkin(){
-        if(hairHolder.currentHairtest != null){ Destroy(hairHolder.currentHairtest.gameObject);}
-        if(shieldHolder.currentShieldtest != null){ Destroy(shieldHolder.currentShieldtest.gameObject);}
-        if(owner.Pant != null) pant.ChangePant(EPant.None);
-        if(owner.SetHolder != null) { owner.SetHolder.DeActiveSet();}
-    }   
+    public void DelTestSkin()
+    {
+        if (hairHolder.currentHairtest != null) { Destroy(hairHolder.currentHairtest.gameObject); }
+        if (shieldHolder.currentShieldtest != null) { Destroy(shieldHolder.currentShieldtest.gameObject); }
+        if (owner.Pant != null) pant.ChangePant(EPant.None);
+        if (owner.SetHolder != null) { owner.SetHolder.ChangeSet(ESet.None); }
+    }
     public T GetRandomEnumValue<T>() where T : Enum
     {
         T[] values = (T[])Enum.GetValues(typeof(T));

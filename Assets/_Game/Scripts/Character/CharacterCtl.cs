@@ -131,15 +131,11 @@ public class CharacterCtl : GameUnit
         prepareAttackDuration = 1 / AttackSpeed;
     }
 
-    public void SetInitialMoveSpeed()
+    public virtual void SetInitialMoveSpeed()
     {
         MoveSpeed = GameData.Ins.characterConfig.moveSpeed;
     }
-    public void AddMoveSpeed(float additionalMoveSpeed)
-    {
-        MoveSpeed += additionalMoveSpeed;
-    }
-    public void DelMoveSpeed(float additionalMoveSpeed)
+    public virtual void AddMoveSpeed(float additionalMoveSpeed)
     {
         MoveSpeed += additionalMoveSpeed;
     }

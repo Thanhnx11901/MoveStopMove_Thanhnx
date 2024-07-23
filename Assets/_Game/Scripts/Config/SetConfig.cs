@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class SetConfig : ScriptableObject
 {
-    public List<Sprite> spriteSets; 
+    public List<Set> sets; 
 
-    public Sprite GetSpriteSet(ESet eSet){
-        return spriteSets[(int)eSet];
+    public Set GetSet(ESet eSet){
+        return sets[(int)eSet];
     }
 }

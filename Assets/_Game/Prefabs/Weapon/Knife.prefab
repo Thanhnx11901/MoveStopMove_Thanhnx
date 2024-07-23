@@ -134,7 +134,7 @@ MonoBehaviour:
   rotation: {x: 30, y: 0, z: -65}
   range: 0
   attackSpeed: 0.8
-  imgShop: {fileID: 0}
+  sprite: {fileID: 21300000, guid: b672a2f11bebf428ba041b040c40d812, type: 3}
   nameWeapon: 4
   addPower: +8 Attack Speed
   timeDespawn: 1
