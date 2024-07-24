@@ -126,13 +126,13 @@ MonoBehaviour:
   - Id: 1
     Name: Khien
     Description: 
-    icon: {fileID: 21300000, guid: 7d65a9e5fe89b4c71879a474668103a9, type: 3}
+    icon: {fileID: 21300000, guid: 91964ac04ad824ad1ae39c958508b5a8, type: 3}
     ESkin: 2
     Price: 100
   - Id: 2
     Name: Shield
     Description: 
-    icon: {fileID: 21300000, guid: 001c11dc840d7458383bb29b311497a4, type: 3}
+    icon: {fileID: 21300000, guid: 2e9fc004bbc92444c8e3e6a2efcdfdc6, type: 3}
     ESkin: 2
     Price: 100
   SetFullDataConfig:
@@ -158,30 +158,30 @@ MonoBehaviour:
   - Id: 0
     Name: Hammer
     Description: 
-    icon: {fileID: 21300000, guid: def5be553c1ea40359887a3f6f781f2c, type: 3}
+    icon: {fileID: 21300000, guid: 90a0040e305084af8898c6b4b8f4f211, type: 3}
     ESkin: 5
     Price: 100
   - Id: 1
     Name: Candy
     Description: 
-    icon: {fileID: 21300000, guid: a7fee3d1becc548dbb86147a7439415d, type: 3}
+    icon: {fileID: 21300000, guid: cab95fbd11476471a8125a218825c1c3, type: 3}
     ESkin: 5
     Price: 100
   - Id: 2
     Name: Boomerang
     Description: 
-    icon: {fileID: 21300000, guid: 3cb7b3f06a15044dabc91a892d38602e, type: 3}
+    icon: {fileID: 21300000, guid: 3b24eadd97ec04c6b919dc6ba36b4650, type: 3}
     ESkin: 5
     Price: 100
   - Id: 3
     Name: Axe
     Description: 
-    icon: {fileID: 21300000, guid: fba9060bd91be460ab01a6c7ece64694, type: 3}
+    icon: {fileID: 21300000, guid: 24fa0732389334effa140c78ebb0cc24, type: 3}
     ESkin: 5
     Price: 100
   - Id: 4
     Name: Knife
     Description: 
-    icon: {fileID: 21300000, guid: b672a2f11bebf428ba041b040c40d812, type: 3}
+    icon: {fileID: 21300000, guid: 756dfd4a1ae1442d0bf7b98c7daa96b4, type: 3}
     ESkin: 5
     Price: 100
