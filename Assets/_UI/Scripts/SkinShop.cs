@@ -62,7 +62,7 @@ public class SkinShop : UICanvas
     private void OnEnable()
     {
         idSkin = 1;
-        if (PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == idSkin)
+        if (PlayerPrefs.GetInt(Constants.CURRENT_SKIN) == idSkin && PlayerPrefs.GetInt(Constants.CURRENT_HAIR) != 0)
         {
             id = PlayerPrefs.GetInt(Constants.CURRENT_HAIR);
         }
@@ -193,8 +193,8 @@ public class SkinShop : UICanvas
         {
             PlayerPrefs.SetInt(Constants.CURRENT_SKIN, idSkin);
             PlayerPrefs.SetInt(Constants.CURRENT_HAIR, id);
-            LevelManager.Ins.playerCtl.OnInit();
             LevelManager.Ins.playerCtl.IsActiveSkin(true);
+            LevelManager.Ins.playerCtl.OnInit();
             LoadButton();
 
         }

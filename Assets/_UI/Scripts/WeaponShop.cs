@@ -99,12 +99,14 @@ public class WeaponShop : UICanvas
 
     public void SelectButton()
     {
-        playerCtl.WeaponHolder.ChangeWeapon(eCurrentWeapon);
+        PlayerPrefs.SetInt(Constants.CURRENT_WEAPON, (int)eCurrentWeapon);
+        playerCtl.OnInit();
         ExitButton();
     }
     public void EquippedButton()
     {
-        playerCtl.WeaponHolder.ChangeWeapon(eCurrentWeapon);
+        PlayerPrefs.SetInt(Constants.CURRENT_WEAPON, (int)eCurrentWeapon);
+        playerCtl.OnInit();
         ExitButton();
     }
     public void BuyButton()

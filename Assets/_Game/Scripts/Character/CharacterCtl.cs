@@ -43,7 +43,7 @@ public class CharacterCtl : GameUnit
     public bool IsAttack { get; set; }
     public float AttackSpeed { get; set; }
     public float MoveSpeed { get; set; }
-    public float Range { get; set; }
+    public float Range;
     public bool IsDead { get; set; }
     public WeaponHolder WeaponHolder => weaponHolder;
     public HairHolder HairHolder => hairHolder;

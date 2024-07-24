@@ -7,8 +7,6 @@ public class WeaponHolder : MonoBehaviour
     [SerializeField] private CharacterCtl owner;
     // xóa tầm đánh và tốc độ đánh của vũ khí trước
     public void DelWeapon(){
-        owner.DelAttackRange(owner.CurrentWeapon.Range);
-        owner.DelAttackSpeed(owner.CurrentWeapon.AttackSpeed);
         Destroy(owner.CurrentWeapon.gameObject);
     }
     public void ChangeWeapon(EWeapon eWeapon){
@@ -23,7 +21,6 @@ public class WeaponHolder : MonoBehaviour
         weapon.TF.localPosition = weapon.Position;
         weapon.TF.localRotation = Quaternion.Euler(weapon.Rotation);
 
-        // thêm tầm đánh hoặc tốc độ đánh 
         owner.AddAttackRange(weapon.Range);
         owner.AddAttackSpeed(weapon.AttackSpeed);
     }

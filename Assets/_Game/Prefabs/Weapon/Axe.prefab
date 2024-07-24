@@ -48,7 +48,7 @@ MonoBehaviour:
   poolType: 0
   position: {x: -0.2, y: 0.35, z: 0.01}
   rotation: {x: 30, y: 0, z: -65}
-  range: 0.5
+  range: 0.05
   attackSpeed: 0
   sprite: {fileID: 21300000, guid: fba9060bd91be460ab01a6c7ece64694, type: 3}
   nameWeapon: 0
