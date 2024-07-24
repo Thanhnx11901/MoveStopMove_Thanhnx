@@ -46,7 +46,6 @@ public class PlayerCtl : CharacterCtl
 
     protected override void Update()
     {
-        Debug.Log(PlayerPrefs.GetInt(Constants.CURRENT_WEAPON));
         base.Update();
         if(GameManager.IsState(GameState.ShopSkin)) ChangeAnim(Constants.ANIM_DANCE);
         if(GameManager.IsState(GameState.MainMenu)) ChangeAnim(Constants.ANIM_IDLE);

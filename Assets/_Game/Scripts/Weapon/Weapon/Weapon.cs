@@ -32,7 +32,6 @@ public class Weapon : GameUnit
 
     public virtual void Fire(CharacterCtl enemy)
     {
-        Debug.Log("fire");
     }
 
     public void ActiveMeshRenderer(bool isActive){

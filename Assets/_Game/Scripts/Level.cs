@@ -36,7 +36,6 @@ public class Level : MonoBehaviour
     }
     public void SpawnBot(Vector3 point)
     {
-        Debug.Log("sinh bot");
         countTime = 0f;
         BotCtl bot = SimplePool.Spawn<BotCtl>(PoolType.Bot);
         bots.Add(bot);

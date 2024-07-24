@@ -104,8 +104,6 @@ public class BotCtl : CharacterCtl
     }
     IEnumerator CoFire()
     {
-        Debug.Log("attack");
-
         IsAttack = true;
 
         RotateTowardsTarget();
