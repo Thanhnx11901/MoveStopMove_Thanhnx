@@ -100,7 +100,7 @@ MonoBehaviour:
   rb: {fileID: 5619506991753260135}
   speed: 5
   rotationSpeed: 1000
-  flightDistance: 7
+  flightDistance: 8
 --- !u!1 &4916989606161567293
 GameObject:
   m_ObjectHideFlags: 0

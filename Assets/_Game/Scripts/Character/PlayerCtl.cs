@@ -20,14 +20,6 @@ public class PlayerCtl : CharacterCtl
     }
     protected override void Start()
     {
-        if (PlayerPrefs.GetInt("FirstTime", 0) == 0)
-        {
-            PlayerPrefs.SetString(Constants.WEAPON, "0");
-            PlayerPrefs.SetInt(Constants.CURRENT_WEAPON,0);
-            PlayerPrefs.SetInt(Constants.CURRENT_COIN, 500);
-            PlayerPrefs.SetInt("FirstTime", 1);
-            PlayerPrefs.Save();
-        }
         base.Start();
     }
     public override void OnInit()

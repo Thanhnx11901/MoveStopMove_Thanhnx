@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public class Lose : UICanvas
 {
     public Text textAlice;
-    private void Start() {
-        Debug.Log("in text");
+    private void OnEnable() {
         textAlice.text = "#"+LevelManager.Ins.currentLevel.TotalBotAlive();
     }
 

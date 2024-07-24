@@ -138,5 +138,5 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: a7fee3d1becc548dbb86147a7439415d, type: 3}
   nameWeapon: 1
   addPower: +3 Range
-  timeDespawn: 1
+  timeDespawn: 1.5
   meshRenderer: {fileID: 1704354141641263099}

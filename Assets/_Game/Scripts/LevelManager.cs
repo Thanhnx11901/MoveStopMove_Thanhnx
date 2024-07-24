@@ -10,6 +10,14 @@ public class LevelManager : Singleton<LevelManager>
     public List<Level> levels;
 
     private void Start() {
+         if (PlayerPrefs.GetInt("FirstTime", 0) == 0)
+        {
+            PlayerPrefs.SetString(Constants.WEAPON, "0");
+            PlayerPrefs.SetInt(Constants.CURRENT_WEAPON,0);
+            PlayerPrefs.SetInt(Constants.CURRENT_COIN, 500);
+            PlayerPrefs.SetInt("FirstTime", 1);
+            PlayerPrefs.Save();
+        }
         currentLevel = Instantiate(levels[PlayerPrefs.GetInt(Constants.CURRENT_LEVEL)],transform);
         currentLevel.OnInit();
     }

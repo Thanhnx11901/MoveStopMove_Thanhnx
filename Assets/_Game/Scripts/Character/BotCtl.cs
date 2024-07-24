@@ -37,8 +37,12 @@ public class BotCtl : CharacterCtl
     }
     protected override void Update()
     {
-        if(GameManager.IsState(GameState.GamePlay)) agent.enabled = true;
-        else agent.enabled = false;
+        if (GameManager.IsState(GameState.GamePlay)) agent.enabled = true;
+        else
+        {
+            agent.enabled = false;
+            return;
+        }
         if (currentState != null)
         {
             currentState.OnExecute(this);
