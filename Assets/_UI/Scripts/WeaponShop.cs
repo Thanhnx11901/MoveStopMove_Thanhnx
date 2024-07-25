@@ -118,7 +118,6 @@ public class WeaponShop : UICanvas
 
         string data = PlayerPrefs.GetString(Constants.WEAPON).ToString() + (int)eCurrentWeapon;
         PlayerPrefs.SetString(Constants.WEAPON, data);
-        Debug.Log(PlayerPrefs.GetString(Constants.WEAPON));
         UpdateUI();
     }
 

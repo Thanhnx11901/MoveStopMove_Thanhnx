@@ -16,7 +16,7 @@ public class Level : MonoBehaviour
     public int bonusCoin;
     public void OnInit(){
         if(bots.Count > 0) DespawnAllBots();
-        timer = 3f;
+        timer = 1.5f;
         countTime = 0f;
         countBot = 0;
         countBotDie = 0;

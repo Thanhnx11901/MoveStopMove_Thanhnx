@@ -14,7 +14,7 @@ public class LevelManager : Singleton<LevelManager>
         {
             PlayerPrefs.SetString(Constants.WEAPON, "0");
             PlayerPrefs.SetInt(Constants.CURRENT_WEAPON, 0);
-            PlayerPrefs.SetInt(Constants.CURRENT_COIN, 500);
+            PlayerPrefs.SetInt(Constants.CURRENT_COIN, 1000);
             PlayerPrefs.SetInt("FirstTime", 1);
             PlayerPrefs.Save();
         }

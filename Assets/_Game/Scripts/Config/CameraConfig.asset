@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: CameraConfig
   m_EditorClassIdentifier: 
   cameraPos:
-  - offset: {x: 0, y: 5, z: -6}
-    rotation: {x: 40, y: 0, z: 0}
+  - offset: {x: 0, y: 4, z: -7}
+    rotation: {x: 30, y: 0, z: 0}
   - offset: {x: 0, y: 20, z: -19}
     rotation: {x: 50, y: 0, z: 0}
-  - offset: {x: 0, y: 7, z: -10}
-    rotation: {x: 45, y: 0, z: 0}
+  - offset: {x: 0, y: 5, z: -10}
+    rotation: {x: 38, y: 0, z: 0}
   - offset: {x: 0, y: 7, z: -10}
     rotation: {x: 45, y: 0, z: 0}
